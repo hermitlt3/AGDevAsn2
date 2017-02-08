@@ -9,6 +9,7 @@
 
 class SpriteEntity;
 class SceneManager;
+class TextEntity;
 class CIntroState : public Scene
 {
 public: 

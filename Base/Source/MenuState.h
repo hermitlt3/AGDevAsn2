@@ -7,6 +7,7 @@
 #include "MatrixStack.h"
 
 class SpriteEntity;
+class TextEntity;
 class SceneManager;
 class CMenuState : public Scene
 {
@@ -22,4 +23,5 @@ public:
 private:
 	FPSCamera camera;
 	SpriteEntity* MenuStateBackground;
+	TextEntity* Select;
 };

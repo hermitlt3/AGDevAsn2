@@ -32,10 +32,13 @@ void CIntroState::Init()
 	GraphicsManager::GetInstance()->AttachCamera(&camera);
 
 	MeshBuilder::GetInstance()->GenerateQuad("INTROSTATE_BACKGROUND", Color(1, 1, 1), 1.f);
-	MeshBuilder::GetInstance()->GetMesh("INTROSTATE_BACKGROUND")->textureID = LoadTGA("Image//IntroState.tga");
+	MeshBuilder::GetInstance()->GetMesh("INTROSTATE_BACKGROUND")->textureID = LoadTGA("Image//IntroState//IntroState.tga");
+
 	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.f;
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.f;
-	IntroStateBackground = Create::Sprite2DObject("INTROSTATE_BACKGROUND", Vector3(halfWindowWidth, halfWindowHeight, 0.f), Vector3(800.f, 600.f, 0.f));
+
+	IntroStateBackground = Create::Sprite2DObject("INTROSTATE_BACKGROUND", Vector3(halfWindowWidth, halfWindowHeight, 0.f), Vector3(halfWindowWidth * 2, halfWindowHeight * 2, 0.f));
+
 	cout << "CIntroState loaded\n" << endl;
 
 	int a, b, c, d;
@@ -71,5 +74,5 @@ void CIntroState::Exit()
 {
 	EntityManager::GetInstance()->RemoveEntity(IntroStateBackground);
 	MeshBuilder::GetInstance()->RemoveMesh("INTROSTATE_BACKGROUND");
-	GraphicsManager::GetInstance()->DetachCamera(); 
+	GraphicsManager::GetInstance()->DetachCamera();
 }

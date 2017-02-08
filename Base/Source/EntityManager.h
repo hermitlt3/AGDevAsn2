@@ -5,6 +5,7 @@
 #include <list>
 #include "Vector3.h"
 #include "SpatialPartition\SpatialPartition.h"
+#include "Lua\LuaInterface.h"
 
 class EntityBase;
 

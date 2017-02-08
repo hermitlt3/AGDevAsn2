@@ -112,71 +112,7 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GetMesh("SKYBOX_BOTTOM")->textureID = LoadTGA("Image//SkyBox//skybox_bottom.tga");
 	MeshBuilder::GetInstance()->GenerateRay("laser", 10.0f);
 	MeshBuilder::GetInstance()->GenerateQuad("GRIDMESH", Color(1, 0, 0), 1.f);
-
-	MeshBuilder::GetInstance()->GenerateOBJ("Windmill_topH", "OBJ//Gameobject//Windmill_Top_H.obj");
-	MeshBuilder::GetInstance()->GenerateOBJ("Windmill_topM", "OBJ//Gameobject//Windmill_Top_M.obj");
-	MeshBuilder::GetInstance()->GenerateOBJ("Windmill_topL", "OBJ//Gameobject//Windmill_Top_L.obj");
-	MeshBuilder::GetInstance()->GenerateOBJ("Windmill_botH", "OBJ//Gameobject//Windmill_Bot_H.obj");
-	MeshBuilder::GetInstance()->GenerateOBJ("Windmill_botM", "OBJ//Gameobject//Windmill_Bot_M.obj");
-	MeshBuilder::GetInstance()->GenerateOBJ("Windmill_botL", "OBJ//Gameobject//Windmill_Bot_L.obj");
-	MeshBuilder::GetInstance()->GenerateOBJ("Windmill_sailH", "OBJ//Gameobject//Windmill_Sails_H.obj");
-	MeshBuilder::GetInstance()->GenerateOBJ("Windmill_sailM", "OBJ//Gameobject//Windmill_Sails_M.obj");
-	MeshBuilder::GetInstance()->GenerateOBJ("Windmill_sailL", "OBJ//Gameobject//Windmill_Sails_L.obj");
-	MeshBuilder::GetInstance()->GetMesh("Windmill_topH")->textureID = LoadTGA("Image//mill_1.tga");;
-	MeshBuilder::GetInstance()->GetMesh("Windmill_topM")->textureID = LoadTGA("Image//mill_1.tga");;
-	MeshBuilder::GetInstance()->GetMesh("Windmill_topL")->textureID = LoadTGA("Image//mill_1.tga");;
-	MeshBuilder::GetInstance()->GetMesh("Windmill_botH")->textureID = LoadTGA("Image//mill_2.tga");;
-	MeshBuilder::GetInstance()->GetMesh("Windmill_botM")->textureID = LoadTGA("Image//mill_2.tga");;
-	MeshBuilder::GetInstance()->GetMesh("Windmill_botL")->textureID = LoadTGA("Image//mill_2.tga");;
-	MeshBuilder::GetInstance()->GetMesh("Windmill_sailH")->textureID = LoadTGA("Image//sails.tga");;
-	MeshBuilder::GetInstance()->GetMesh("Windmill_sailM")->textureID = LoadTGA("Image//sails.tga");;
-	MeshBuilder::GetInstance()->GetMesh("Windmill_sailL")->textureID = LoadTGA("Image//sails.tga");;
-
-	MeshBuilder::GetInstance()->GenerateOBJ("House_H", "OBJ//Gameobject//House_H.obj");
-	MeshBuilder::GetInstance()->GenerateOBJ("House_M", "OBJ//Gameobject//House_M.obj");
-	MeshBuilder::GetInstance()->GenerateOBJ("House_L", "OBJ//Gameobject//House_L.obj");
-	MeshBuilder::GetInstance()->GetMesh("House_H")->textureID = LoadTGA("Image//Farmhouse.tga");
-	MeshBuilder::GetInstance()->GetMesh("House_M")->textureID = LoadTGA("Image//Farmhouse.tga");
-	MeshBuilder::GetInstance()->GetMesh("House_L")->textureID = LoadTGA("Image//Farmhouse.tga");
-
-	MeshBuilder::GetInstance()->GenerateOBJ("Sack_H", "OBJ//Gameobject//Sack_H.obj");
-	MeshBuilder::GetInstance()->GenerateOBJ("Sack_M", "OBJ//Gameobject//Sack_M.obj");
-	MeshBuilder::GetInstance()->GenerateOBJ("Sack_L", "OBJ//Gameobject//Sack_L.obj");
-	MeshBuilder::GetInstance()->GetMesh("Sack_H")->textureID = LoadTGA("Image//Sack.tga");
-	MeshBuilder::GetInstance()->GetMesh("Sack_M")->textureID = LoadTGA("Image//Sack.tga");
-	MeshBuilder::GetInstance()->GetMesh("Sack_L")->textureID = LoadTGA("Image//Sack.tga");
-
-	MeshBuilder::GetInstance()->GenerateOBJ("Barrel_H", "OBJ//Gameobject//Barrel_H.obj");
-	MeshBuilder::GetInstance()->GenerateOBJ("Barrel_M", "OBJ//Gameobject//Barrel_M.obj");
-	MeshBuilder::GetInstance()->GenerateOBJ("Barrel_L", "OBJ//Gameobject//Barrel_L.obj");
-	MeshBuilder::GetInstance()->GetMesh("Barrel_H")->textureID = LoadTGA("Image//Barrel.tga");
-	MeshBuilder::GetInstance()->GetMesh("Barrel_M")->textureID = LoadTGA("Image//Barrel.tga");
-	MeshBuilder::GetInstance()->GetMesh("Barrel_L")->textureID = LoadTGA("Image//Barrel.tga");
-
-	MeshBuilder::GetInstance()->GenerateOBJ("Crate_H", "OBJ//Gameobject//Crate_H.obj");
-	MeshBuilder::GetInstance()->GenerateOBJ("Crate_M", "OBJ//Gameobject//Crate_M.obj");
-	MeshBuilder::GetInstance()->GenerateOBJ("Crate_L", "OBJ//Gameobject//Crate_L.obj");
-	MeshBuilder::GetInstance()->GetMesh("Crate_H")->textureID = LoadTGA("Image//Crate.tga");
-	MeshBuilder::GetInstance()->GetMesh("Crate_M")->textureID = LoadTGA("Image//Crate.tga");
-	MeshBuilder::GetInstance()->GetMesh("Crate_L")->textureID = LoadTGA("Image//Crate.tga");
-
-	MeshBuilder::GetInstance()->GenerateOBJ("ZHand", "OBJ//Steve//Hand.obj");
-	MeshBuilder::GetInstance()->GenerateOBJ("ZLeg", "OBJ//Steve//Leg.obj");
-	MeshBuilder::GetInstance()->GenerateOBJ("ZTorso", "OBJ//Steve//Torso.obj");
-	MeshBuilder::GetInstance()->GenerateOBJ("ZHead", "OBJ//Steve//Head.obj");
-	MeshBuilder::GetInstance()->GetMesh("ZHand")->textureID = LoadTGA("Image//zombie.tga");
-	MeshBuilder::GetInstance()->GetMesh("ZLeg")->textureID = LoadTGA("Image//zombie.tga");
-	MeshBuilder::GetInstance()->GetMesh("ZTorso")->textureID = LoadTGA("Image//zombie.tga"); 
-	MeshBuilder::GetInstance()->GetMesh("ZHead")->textureID = LoadTGA("Image//zombie.tga");
 	
-	MeshBuilder::GetInstance()->GenerateOBJ("SHand", "OBJ//Steve//Hand.obj");
-	MeshBuilder::GetInstance()->GenerateOBJ("SLeg", "OBJ//Steve//Leg.obj");
-	MeshBuilder::GetInstance()->GenerateOBJ("STorso", "OBJ//Steve//Torso.obj");
-	MeshBuilder::GetInstance()->GenerateOBJ("SHead", "OBJ//Steve//Head.obj");
-	MeshBuilder::GetInstance()->GetMesh("SHand")->textureID = LoadTGA("Image//steve.tga");
-	MeshBuilder::GetInstance()->GetMesh("SLeg")->textureID = LoadTGA("Image//steve.tga");
-	MeshBuilder::GetInstance()->GetMesh("STorso")->textureID = LoadTGA("Image//steve.tga");
-	MeshBuilder::GetInstance()->GetMesh("SHead")->textureID = LoadTGA("Image//steve.tga");
 
 	MeshBuilder::GetInstance()->GenerateSpriteAnimation("GrenadeExplode", 3, 5);
 	MeshBuilder::GetInstance()->GetMesh("GrenadeExplode")->textureID = LoadTGA("Image//BOOM.tga");

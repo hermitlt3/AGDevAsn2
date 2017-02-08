@@ -17,6 +17,9 @@
 
 #include "SceneText.h"
 #include "Lua/LuaInterface.h"
+#include "MeshBuilder.h"
+#include "LoadTGA.h"
+#include "Vector3.h"
 
 GLFWwindow* m_window;
 const unsigned char FPS = 60; // FPS of this game
@@ -56,6 +59,54 @@ Application::~Application()
 {
 }
 
+static int luaCreateMesh(lua_State *L)
+{
+	int n = lua_gettop(L);
+	if (n < 3)
+	{
+		std::cout << "Error: createObj" << std::endl;
+		lua_error(L);
+		return 0;
+	}
+	// 1st meshName
+	// 2nd objpath
+	// 3rd tgapath
+
+	const std::string &meshName = lua_tostring(L, 1);
+	const std::string &obj_path = lua_tostring(L, 2);
+	const std::string &tga_path = lua_tostring(L, 3);
+
+	Mesh* tempo;
+	tempo = MeshBuilder::GetInstance()->GenerateOBJ(meshName, obj_path);
+	tempo->textureID = LoadTGA(tga_path.c_str());
+	return 1;
+}
+
+static int luaCreateQuad(lua_State *L)
+{
+	int n = lua_gettop(L);
+	if (n < 4)
+	{
+		std::cout << "Error: createQuad" << std::endl;
+		lua_error(L);
+		return 0;
+	}
+	// 1st meshName
+	// 2nd color
+	// 3rd length
+	// 4th tgapath
+
+	const std::string &meshName = lua_tostring(L, 1);
+	//const Vector3 color = lua_(L, 2);
+	const float length = (float)lua_tonumber(L, 3);
+	const std::string &tga_path = lua_tostring(L, 4);
+
+	Mesh* tempo;
+	tempo = MeshBuilder::GetInstance()->GenerateQuad(meshName, obj_path);
+	tempo->textureID = LoadTGA(tga_path.c_str());
+	return 1;
+	return 1;
+}
 void Application::Init()
 {
 	// Initialise the Lua system
@@ -121,6 +172,13 @@ void Application::Init()
 	// Init systems
 	GraphicsManager::GetInstance()->Init();
 
+	CLuaInterface::GetInstance()->theMeshLua = lua_open();
+	luaL_openlibs(CLuaInterface::GetInstance()->theMeshLua);
+	lua_register(CLuaInterface::GetInstance()->theMeshLua, "luaCreateMesh", luaCreateMesh);
+	lua_register(CLuaInterface::GetInstance()->theMeshLua, "luaCreateQuad", luaCreateQuad);
+	luaL_dofile(CLuaInterface::GetInstance()->theMeshLua, "Image//MeshLua.lua");
+	lua_close(CLuaInterface::GetInstance()->theMeshLua);
+
 	SceneManager::GetInstance()->AddScene("IntroState", new CIntroState());
 	SceneManager::GetInstance()->AddScene("MenuState", new CMenuState());
 	SceneManager::GetInstance()->AddScene("GameState", new SceneText());
@@ -172,30 +230,7 @@ void Application::InitDisplay(void)
 
 	// Tell the graphics manager to use the shader we just loaded
 	GraphicsManager::GetInstance()->SetActiveShader("default");
-	/*
-	lights[0] = new Light();
-	GraphicsManager::GetInstance()->AddLight("lights[0]", lights[0]);
-	lights[0]->type = Light::LIGHT_DIRECTIONAL;
-	lights[0]->position.Set(0, 20, 0);
-	lights[0]->color.Set(1, 1, 1);
-	lights[0]->power = 1;
-	lights[0]->kC = 1.f;
-	lights[0]->kL = 0.01f;
-	lights[0]->kQ = 0.001f;
-	lights[0]->cosCutoff = cos(Math::DegreeToRadian(45));
-	lights[0]->cosInner = cos(Math::DegreeToRadian(30));
-	lights[0]->exponent = 3.f;
-	lights[0]->spotDirection.Set(0.f, 1.f, 0.f);
-	lights[0]->name = "lights[0]";
 
-	lights[1] = new Light();
-	GraphicsManager::GetInstance()->AddLight("lights[1]", lights[1]);
-	lights[1]->type = Light::LIGHT_DIRECTIONAL;
-	lights[1]->position.Set(1, 1, 0);
-	lights[1]->color.Set(1, 1, 0.5f);
-	lights[1]->power = 0.4f;
-	lights[1]->name = "lights[1]";
-	*/
 	currProg->UpdateInt("numLights", 0);
 	currProg->UpdateInt("textEnabled", 0);
 }

@@ -14,7 +14,7 @@ using namespace std;
 
 #include "KeyboardController.h"
 #include "SceneManager.h"
-
+#include "Lua\LuaInterface.h"
 CMenuState::CMenuState()
 {
 
@@ -29,18 +29,23 @@ void CMenuState::Init()
 {
 	camera.Init(Vector3(0, 0, 10), Vector3(0, 0, 0), Vector3(0, 1, 0));
 	MeshBuilder::GetInstance()->GenerateQuad("MENUSTATE_BACKGROUND", Color(1, 1, 1), 1.f);
-	MeshBuilder::GetInstance()->GetMesh("MENUSTATE_BACKGROUND")->textureID = LoadTGA("Image//MenuState.tga");
+	MeshBuilder::GetInstance()->GetMesh("MENUSTATE_BACKGROUND")->textureID = LoadTGA("Image//MenuState//MenuState.tga");
+	MeshBuilder::GetInstance()->GenerateText("text", 16, 16);
+	MeshBuilder::GetInstance()->GetMesh("text")->textureID = LoadTGA("Image//Text//calibri.tga");
+
 	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.f;
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.f;
-	MenuStateBackground = Create::Sprite2DObject("MENUSTATE_BACKGROUND", Vector3(halfWindowWidth, halfWindowHeight, 0.f), Vector3(800.f, 600.f, 0.f));
+	//Vector3 selectpos = CLuaInterface::GetInstance()->getVector3Values("MenuStateSelectPos");
+	MenuStateBackground = Create::Sprite2DObject("MENUSTATE_BACKGROUND", Vector3(halfWindowWidth, halfWindowHeight, -9.f), Vector3(halfWindowWidth * 2, halfWindowHeight * 2, 0.f));
+	Select = Create::Text2DObject("text", Vector3(400, 320, 0), ">", Vector3(50, 50, 2), Color(0.f, 0.0f, 0.0f));
 	cout << "CMenuState loaded\n" << endl;
 }
 
 void CMenuState::Update(double _dt)
 {
-	if (KeyboardController::GetInstance()->IsKeyReleased(VK_SPACE))
+	if (KeyboardController::GetInstance()->IsKeyReleased(VK_RETURN))
 	{
-		cout << "Loading CMenuState" << endl;
+
 		SceneManager::GetInstance()->SetActiveScene("GameState");
 	}
 }

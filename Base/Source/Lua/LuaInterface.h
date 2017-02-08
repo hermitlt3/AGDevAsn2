@@ -31,16 +31,24 @@ public:
 	void Drop();
 		// Pointer to the Lua State 
 	lua_State *theLuaState; 
+	lua_State *theErrorState;
+	lua_State *theMeshLua;
 
-	int getIntValue(const std::string& name);
-	float getFloatValue(const std::string& name);
-	char getCharValue(const std::string& varName);
-	Vector3 getVector3Values(const std::string& varName);
+	int getIntValue(const char *name);
+	float getFloatValue(const char *name);
+	char getCharValue(const char *name);
+	Vector3 getVector3Values(const char *name);
 
-	bool getVariableValues(const std::string& name, int &a, int&b, int&c, int&d);
+	bool getVariableValues(const char *name, int &a, int&b, int&c, int&d);
 
-	bool saveIntValue(const std::string& newName, const int& value, const bool& bOverwrite = false);
-	bool saveFloatValue(const std::string& newName, const float& value, const bool& bOverwrite = false);
+	bool saveIntValue(const char *name, const int& value, const bool& bOverwrite = false);
+	bool saveFloatValue(const char *name, const float& value, const bool& bOverwrite = false);
+	bool saveVector3Values(const char *name, const Vector3& value);
 
-	float getDistanceSquareValue(const std::string& name, Vector3 source, Vector3 destination);
+	float getDistanceSquareValue(const char *name, Vector3 source, Vector3 destination);
+	// Extract a field from a table
+	float GetField(const char *key);
+
+	// Get error message using an error code
+	void error(const char *errorCode);
 };
