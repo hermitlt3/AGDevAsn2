@@ -39,17 +39,17 @@
 #include <iostream>
 using namespace std;
 
-SceneText* SceneText::sInstance = new SceneText(SceneManager::GetInstance());
+//SceneText* SceneText::sInstance = new SceneText(SceneManager::GetInstance());
 
 SceneText::SceneText() //: Sound_Engine(NULL), Sound(NULL)
 {
 	
 }
 
-SceneText::SceneText(SceneManager* _sceneMgr)
-{
-	_sceneMgr->AddScene("Start", this);
-}
+//SceneText::SceneText(SceneManager* _sceneMgr)
+//{
+	//_sceneMgr->AddScene("Start", this);
+//}
 
 SceneText::~SceneText()
 {
@@ -63,6 +63,7 @@ SceneText::~SceneText()
 
 void SceneText::Init()
 {
+	/*
 	//Sound_Engine = createIrrKlangDevice();
 	currProg = GraphicsManager::GetInstance()->LoadShader("default", "Shader//Texture.vertexshader", "Shader//Texture.fragmentshader");
 	
@@ -131,7 +132,7 @@ void SceneText::Init()
 
 	currProg->UpdateInt("numLights", 1);
 	currProg->UpdateInt("textEnabled", 0);
-	
+	*/
 	// Create the playerinfo instance, which manages all information about the player
 	playerInfo = CPlayerInfo::GetInstance();
 	playerInfo->Init();

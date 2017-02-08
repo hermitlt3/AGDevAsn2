@@ -35,7 +35,7 @@ public:
 	virtual void Exit();
 
 private:
-	SceneText(SceneManager* _sceneMgr); // This is used to register to SceneManager
+	//SceneText(SceneManager* _sceneMgr); // This is used to register to SceneManager
 
 	ShaderProgram* currProg;
 	CPlayerInfo* playerInfo;
@@ -59,7 +59,7 @@ private:
 	int winlose;
 	double gameTimer;
 
-	static SceneText* sInstance; // The pointer to the object that gets registered
+	//static SceneText* sInstance; // The pointer to the object that gets registered
 };
 
 #endif
