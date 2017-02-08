@@ -16,3 +16,30 @@ end
 title = "DM2240 - Week 14 LuaScripting"
 width = 800
 height = 600
+
+-- Keyboard Inputs
+moveForward 	= "W"
+moveBackward 	= "S"
+moveLeft		= "A"
+moveRight		= "D"
+reload			= "R"
+inventory		= "I"
+
+
+-- CPlayerInfo start position
+CPlayerInfoStartPos = {0, 0, 10}
+
+-- CalculateDistanceSquare
+function CalculateDistanceSquare(x1, y1, z1, x2, y2, z2)
+	local distanceSquare = (x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1) + (z2 - z1)*(z2 - z1)
+	print(distanceSquare)
+	return distanceSquare
+end
+
+function TestSum(a, b, c, d)
+	local la = a + 2
+	local lb = b + 2
+	local lc = c + 2
+	local ld = d + 2
+	print(la + lb + lc + ld)
+end

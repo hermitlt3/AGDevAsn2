@@ -2,6 +2,7 @@
 // includes the lua headers 
 #include "lua.hpp"
 #include <string>
+#include "Vector3.h"
 
 class CLuaInterface {
 protected: 
@@ -33,7 +34,13 @@ public:
 
 	int getIntValue(const std::string& name);
 	float getFloatValue(const std::string& name);
+	char getCharValue(const std::string& varName);
+	Vector3 getVector3Values(const std::string& varName);
+
+	bool getVariableValues(const std::string& name, int &a, int&b, int&c, int&d);
 
 	bool saveIntValue(const std::string& newName, const int& value, const bool& bOverwrite = false);
 	bool saveFloatValue(const std::string& newName, const float& value, const bool& bOverwrite = false);
+
+	float getDistanceSquareValue(const std::string& name, Vector3 source, Vector3 destination);
 };

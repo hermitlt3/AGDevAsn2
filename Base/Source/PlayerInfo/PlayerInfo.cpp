@@ -9,6 +9,7 @@
 #include "../WeaponInfo/LaserBlaster.h"
 #include "../WeaponInfo/GrenadeThrow.h"
 #include "../Gamepad.h"
+#include "../Lua/LuaInterface.h"
 
 // Allocating and initializing CPlayerInfo's static data member.  
 // The pointer is allocated but not the object's constructor.
@@ -28,7 +29,12 @@ CPlayerInfo::CPlayerInfo(void)
 , m_pTerrain(NULL)
 , primaryWeapon(NULL)
 , secondaryWeapon(NULL)
+, keyMoveForward('W')
+, keyMoveBackward('S')
+, keyMoveLeft('A')
+, keyMoveRight('D')
 {
+
 }
 
 CPlayerInfo::~CPlayerInfo(void)
@@ -71,6 +77,12 @@ void CPlayerInfo::Init(void)
 	//secondaryWeapon->Init();
 	secondaryWeapon = new CGrenadeThrow();
 	secondaryWeapon->Init();
+
+	keyMoveForward	= CLuaInterface::GetInstance()->getCharValue("moveForward");
+	keyMoveBackward = CLuaInterface::GetInstance()->getCharValue("moveBackward");
+	keyMoveLeft		= CLuaInterface::GetInstance()->getCharValue("moveLeft");
+	keyMoveRight	 = CLuaInterface::GetInstance()->getCharValue("moveRight");
+
 }
 
 // Returns true if the player is on ground
@@ -286,23 +298,23 @@ void CPlayerInfo::Update(double dt)
 		position;
 	}
 	// Update the position if the WASD buttons were activated
-	if (KeyboardController::GetInstance()->IsKeyDown('W') ||
-		KeyboardController::GetInstance()->IsKeyDown('A') ||
-		KeyboardController::GetInstance()->IsKeyDown('S') ||
-		KeyboardController::GetInstance()->IsKeyDown('D') ||
+	if (KeyboardController::GetInstance()->IsKeyDown(keyMoveForward) ||
+		KeyboardController::GetInstance()->IsKeyDown(keyMoveBackward) ||
+		KeyboardController::GetInstance()->IsKeyDown(keyMoveLeft) ||
+		KeyboardController::GetInstance()->IsKeyDown(keyMoveRight) ||
 		!Gamepad1->LStick_InDeadzone())
 	{
 		Vector3 viewVector = target - position;
 		Vector3 rightUV;
-		if (KeyboardController::GetInstance()->IsKeyDown('W') || Gamepad1->LeftStick_Y() > 0.f)
+		if (KeyboardController::GetInstance()->IsKeyDown(keyMoveForward) || Gamepad1->LeftStick_Y() > 0.f)
 		{
 			position += viewVector.Normalized() * (float)m_dSpeed * (float)dt;
 		}
-		else if (KeyboardController::GetInstance()->IsKeyDown('S') || Gamepad1->LeftStick_Y() < 0.f)
+		else if (KeyboardController::GetInstance()->IsKeyDown(keyMoveBackward) || Gamepad1->LeftStick_Y() < 0.f)
 		{
 			position -= viewVector.Normalized() * (float)m_dSpeed * (float)dt;
 		}
-		if (KeyboardController::GetInstance()->IsKeyDown('A') || Gamepad1->LeftStick_X() < 0.f)
+		if (KeyboardController::GetInstance()->IsKeyDown(keyMoveLeft) || Gamepad1->LeftStick_X() < 0.f)
 		{
 			rightUV = (viewVector.Normalized()).Cross(up);
 			rightUV.y = 0;
@@ -314,7 +326,7 @@ void CPlayerInfo::Update(double dt)
 			else
 				position -= rightUV * (float)m_dSpeed * (float)dt;
 		}
-		else if (KeyboardController::GetInstance()->IsKeyDown('D') || Gamepad1->LeftStick_X() > 0.f)
+		else if (KeyboardController::GetInstance()->IsKeyDown(keyMoveRight) || Gamepad1->LeftStick_X() > 0.f)
 		{
 			rightUV = (viewVector.Normalized()).Cross(up);
 			rightUV.y = 0;

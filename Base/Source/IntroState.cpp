@@ -15,7 +15,7 @@ using namespace std;
 #include "SceneManager.h"
 
 #include "EntityManager.h"
-
+#include "Lua\LuaInterface.h"
 CIntroState::CIntroState()
 {
 
@@ -37,6 +37,10 @@ void CIntroState::Init()
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.f;
 	IntroStateBackground = Create::Sprite2DObject("INTROSTATE_BACKGROUND", Vector3(halfWindowWidth, halfWindowHeight, 0.f), Vector3(800.f, 600.f, 0.f));
 	cout << "CIntroState loaded\n" << endl;
+
+	int a, b, c, d;
+	a = b = c = d = 5;
+	CLuaInterface::GetInstance()->getVariableValues("TestSum", a, b, c, d);
 }
 
 void CIntroState::Update(double _dt)

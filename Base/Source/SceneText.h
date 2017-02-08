@@ -37,12 +37,10 @@ public:
 private:
 	//SceneText(SceneManager* _sceneMgr); // This is used to register to SceneManager
 
-	ShaderProgram* currProg;
 	CPlayerInfo* playerInfo;
 	GroundEntity* groundEntity;
 	FPSCamera camera;
 	TextEntity* textObj[3];
-	Light* lights[2];
 
 	GenericEntity* theCube;
 	CSteve* theNPC;

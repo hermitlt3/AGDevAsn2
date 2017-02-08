@@ -120,4 +120,9 @@ private:
 
 	CWeaponInfo* primaryWeapon;
 	CWeaponInfo* secondaryWeapon;
+	
+	char keyMoveForward;
+	char keyMoveBackward;
+	char keyMoveLeft;
+	char keyMoveRight;
 };
