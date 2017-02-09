@@ -73,51 +73,6 @@ void SceneText::Init()
 	playerInfo->AttachCamera(&camera);
 	GraphicsManager::GetInstance()->AttachCamera(&camera);
 
-	// Load all the meshes
-	MeshBuilder::GetInstance()->GenerateAxes("reference");
-	MeshBuilder::GetInstance()->GenerateCrossHair("crosshair");
-	MeshBuilder::GetInstance()->GenerateQuad("quad", Color(1, 1, 1), 1.f);
-	MeshBuilder::GetInstance()->GetMesh("quad")->textureID = LoadTGA("Image//Text//calibri.tga");
-	MeshBuilder::GetInstance()->GenerateText("text", 16, 16);
-	MeshBuilder::GetInstance()->GetMesh("text")->textureID = LoadTGA("Image//Text//calibri.tga");
-	MeshBuilder::GetInstance()->GetMesh("text")->material.kAmbient.Set(1, 0, 0);
-
-	MeshBuilder::GetInstance()->GenerateRing("ring", Color(1, 0, 1), 36, 1, 0.5f);
-	MeshBuilder::GetInstance()->GenerateSphere("lightball", Color(1, 1, 1), 18, 36, 1.f);
-	MeshBuilder::GetInstance()->GenerateSphere("sphere", Color(1, 0, 0), 18, 36, 0.5f);
-	MeshBuilder::GetInstance()->GenerateCone("cone", Color(0.5f, 1, 0.3f), 36, 10.f, 10.f);
-	MeshBuilder::GetInstance()->GenerateCube("cube", Color(0.5f, 0.3f, 0.3f), 1.0f);
-	MeshBuilder::GetInstance()->GetMesh("cone")->material.kDiffuse.Set(0.99f, 0.99f, 0.99f);
-	MeshBuilder::GetInstance()->GetMesh("cone")->material.kSpecular.Set(0.f, 0.f, 0.f);
-	MeshBuilder::GetInstance()->GenerateQuad("GRASS_DARKGREEN", Color(1, 1, 1), 1.f);
-	MeshBuilder::GetInstance()->GetMesh("GRASS_DARKGREEN")->textureID = LoadTGA("Image//Default//grass_darkgreen.tga");
-	MeshBuilder::GetInstance()->GenerateQuad("GRASS_LIGHTGREEN", Color(1, 1, 1), 1.f);
-	MeshBuilder::GetInstance()->GetMesh("GRASS_LIGHTGREEN")->textureID = LoadTGA("Image//Default//grass_lightgreen.tga");
-
-	MeshBuilder::GetInstance()->GenerateCube("cubeSG", Color(1.0f, 0.64f, 0.0f), 1.0f);
-	MeshBuilder::GetInstance()->GenerateCube("cube2", Color(1, 1, 1), 1);
-
-	MeshBuilder::GetInstance()->GenerateRay("laser", 10.0f);
-	MeshBuilder::GetInstance()->GenerateQuad("GRIDMESH", Color(1, 0, 0), 1.f);
-	
-
-	MeshBuilder::GetInstance()->GenerateSpriteAnimation("GrenadeExplode", 3, 5);
-	MeshBuilder::GetInstance()->GetMesh("GrenadeExplode")->textureID = LoadTGA("Image//BOOM.tga");
-	MeshBuilder::GetInstance()->GenerateQuad("Bulletfire", Color(0, 0, 0), 1);
-	MeshBuilder::GetInstance()->GetMesh("Bulletfire")->textureID = LoadTGA("Image//Projectiles//gunfire.tga");
-
-	MeshBuilder::GetInstance()->GenerateOBJ("ZGun", "OBJ//Gameobject//M4a1_s.obj");
-	MeshBuilder::GetInstance()->GetMesh("ZGun")->textureID = LoadTGA("Image//M4A1.tga");
-
-	MeshBuilder::GetInstance()->GenerateQuad("KillZombie", Color(0, 0, 0), 1.f);
-	MeshBuilder::GetInstance()->GetMesh("KillZombie")->textureID = LoadTGA("Image//Text//killnpc.tga");
-	MeshBuilder::GetInstance()->GenerateQuad("KillNPC", Color(0, 0, 0), 1.f);
-	MeshBuilder::GetInstance()->GetMesh("KillNPC")->textureID = LoadTGA("Image//Text//killzombie.tga");
-	MeshBuilder::GetInstance()->GenerateQuad("TextOR", Color(0, 0, 0), 1.f);
-	MeshBuilder::GetInstance()->GetMesh("TextOR")->textureID = LoadTGA("Image//Text//or.tga");
-	MeshBuilder::GetInstance()->GenerateQuad("TextTOSTART", Color(0, 0, 0), 1.f);
-	MeshBuilder::GetInstance()->GetMesh("TextTOSTART")->textureID = LoadTGA("Image//Text//tostart.tga");
-
 	// Set up the Spatial Partition and pass it to the EntityManager to manage
 	CSpatialPartition::GetInstance()->Init(125, 125, 8, 8);
 	CSpatialPartition::GetInstance()->SetMesh("GRIDMESH");

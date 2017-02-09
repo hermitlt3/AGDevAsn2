@@ -18,6 +18,7 @@
 #include "SceneText.h"
 #include "Lua/LuaInterface.h"
 #include "MeshBuilder.h"
+#include "SpriteAnimation.h"
 #include "LoadTGA.h"
 #include "Vector3.h"
 
@@ -81,16 +82,15 @@ static int luaCreateMesh(lua_State *L)
 	tempo->textureID = LoadTGA(tga_path.c_str());
 	return 1;
 }
-
 static int luaCreateQuad(lua_State *L)
 {
 	int n = lua_gettop(L);
-	/*if (n < 4)
+	if (n < 4)
 	{
 		std::cout << "Error: createQuad" << std::endl;
 		lua_error(L);
 		return 0;
-	}*/
+	}
 	// 1st meshName
 	// 2nd color
 	// 3rd length
@@ -117,7 +117,279 @@ static int luaCreateQuad(lua_State *L)
 
 	Mesh* tempo;
 	tempo = MeshBuilder::GetInstance()->GenerateQuad(meshName, Color(color.x, color.y, color.z), length);
-	tempo->textureID = LoadTGA(tga_path.c_str());
+	if (tga_path != "")
+		tempo->textureID = LoadTGA(tga_path.c_str());
+	return 1;
+}
+static int luaCreateRay(lua_State *L)
+{
+	int n = lua_gettop(L);
+	if (n < 2)
+	{
+		std::cout << "Error: createRay" << std::endl;
+		lua_error(L);
+		return 0;
+	}
+	// 1st meshName
+	// 2nd length
+
+	const std::string &meshName = lua_tostring(L, 1);
+	const float length = (float)lua_tonumber(L, 2);
+
+	Mesh* tempo;
+	tempo = MeshBuilder::GetInstance()->GenerateRay(meshName, length);
+	return 1;
+}
+static int luaCreateAxes(lua_State *L)
+{
+	int n = lua_gettop(L);
+	if (n < 1)
+	{
+		std::cout << "Error: createAxes" << std::endl;
+		lua_error(L);
+		return 0;
+	}
+	// 1st meshName
+	const std::string &meshName = lua_tostring(L, 1);
+	const float length = (float)lua_tonumber(L, 2);
+
+	Mesh* tempo;
+	tempo = MeshBuilder::GetInstance()->GenerateAxes(meshName);
+	return 1;
+}
+static int luaCreateCrossHair(lua_State *L)
+{
+	int n = lua_gettop(L);
+	if (n < 1)
+	{
+		std::cout << "Error: createCrossHair" << std::endl;
+		lua_error(L);
+		return 0;
+	}
+	// 1st meshName
+	const std::string &meshName = lua_tostring(L, 1);
+
+	Mesh* tempo;
+	tempo = MeshBuilder::GetInstance()->GenerateCrossHair(meshName);
+	return 1;
+}
+static int luaCreateText(lua_State *L)
+{
+	int n = lua_gettop(L);
+	if (n < 4)
+	{
+		std::cout << "Error: createText" << std::endl;
+		lua_error(L);
+		return 0;
+	}
+	// 1st meshName
+	// 2nd rows
+	// 3rd cols
+	// 4th tgapath
+
+	const std::string &meshName = lua_tostring(L, 1);
+	const float rows = (float)lua_tonumber(L, 2);
+	const float cols = (float)lua_tonumber(L, 3);
+	const std::string &tga_path = lua_tostring(L, 4);
+
+	Mesh* tempo;
+	tempo = MeshBuilder::GetInstance()->GenerateText(meshName, rows, cols);
+	if (tga_path != "")
+		tempo->textureID = LoadTGA(tga_path.c_str());
+	return 1;
+}
+static int luaCreateRing(lua_State *L)
+{
+	int n = lua_gettop(L);
+	if (n < 6)
+	{
+		std::cout << "Error: createRing" << std::endl;
+		lua_error(L);
+		return 0;
+	}
+	// 1st meshName
+	// 2nd color
+	// 3rd slice
+	// 4th outer length
+	// 5th inner length
+	// 6th tga
+
+	const std::string &meshName = lua_tostring(L, 1);
+	Vector3 color;
+
+	lua_pushstring(L, "x");
+	lua_gettable(L, 2);
+	color.x = (float)lua_tonumber(L, -1);
+	lua_pop(L, 1);
+	lua_pushstring(L, "y");
+	lua_gettable(L, 2);
+	color.y = (float)lua_tonumber(L, -1);
+	lua_pop(L, 1);
+	lua_pushstring(L, "z");
+	lua_gettable(L, 2);
+	color.z = (float)lua_tonumber(L, -1);
+	lua_pop(L, 1);
+
+	const float slice = (float)lua_tonumber(L, 3);
+	const float outer = (float)lua_tonumber(L, 4);
+	const float inner = (float)lua_tonumber(L, 5);
+	const std::string &tga_path = lua_tostring(L, 6);
+
+	Mesh* tempo;
+	tempo = MeshBuilder::GetInstance()->GenerateRing(meshName, Color(color.x, color.y, color.z), slice, outer, inner);
+	if (tga_path != "")
+		tempo->textureID = LoadTGA(tga_path.c_str());
+	return 1;
+}
+static int luaCreateSphere(lua_State *L)
+{
+	int n = lua_gettop(L);
+	if (n < 6)
+	{
+		std::cout << "Error: createSphere" << std::endl;
+		lua_error(L);
+		return 0;
+	}
+	// 1st meshName
+	// 2nd color
+	// 3rd stack
+	// 4th slice
+	// 5th radius
+	// 6th tga
+
+	const std::string &meshName = lua_tostring(L, 1);
+	Vector3 color;
+
+	lua_pushstring(L, "x");
+	lua_gettable(L, 2);
+	color.x = (float)lua_tonumber(L, -1);
+	lua_pop(L, 1);
+	lua_pushstring(L, "y");
+	lua_gettable(L, 2);
+	color.y = (float)lua_tonumber(L, -1);
+	lua_pop(L, 1);
+	lua_pushstring(L, "z");
+	lua_gettable(L, 2);
+	color.z = (float)lua_tonumber(L, -1);
+	lua_pop(L, 1);
+
+	const float stack = (float)lua_tonumber(L, 3);
+	const float slice = (float)lua_tonumber(L, 4);
+	const float radius = (float)lua_tonumber(L, 5);
+	const std::string &tga_path = lua_tostring(L, 6);
+
+	Mesh* tempo;
+	tempo = MeshBuilder::GetInstance()->GenerateSphere(meshName, Color(color.x, color.y, color.z), stack, slice, radius);
+	if (tga_path != "")
+		tempo->textureID = LoadTGA(tga_path.c_str());
+	return 1;
+}
+static int luaCreateCube(lua_State *L)
+{
+	int n = lua_gettop(L);
+	if (n < 4)
+	{
+		std::cout << "Error: createCube" << std::endl;
+		lua_error(L);
+		return 0;
+	}
+	// 1st meshName
+	// 2nd color
+	// 3rd length
+	// 4th tga
+
+	const std::string &meshName = lua_tostring(L, 1);
+	Vector3 color;
+
+	lua_pushstring(L, "x");
+	lua_gettable(L, 2);
+	color.x = (float)lua_tonumber(L, -1);
+	lua_pop(L, 1);
+	lua_pushstring(L, "y");
+	lua_gettable(L, 2);
+	color.y = (float)lua_tonumber(L, -1);
+	lua_pop(L, 1);
+	lua_pushstring(L, "z");
+	lua_gettable(L, 2);
+	color.z = (float)lua_tonumber(L, -1);
+	lua_pop(L, 1);
+
+	const float length = (float)lua_tonumber(L, 3);
+	const std::string &tga_path = lua_tostring(L, 4);
+
+	Mesh* tempo;
+	tempo = MeshBuilder::GetInstance()->GenerateCube(meshName, Color(color.x, color.y, color.z), length);
+	if (tga_path != "")
+		tempo->textureID = LoadTGA(tga_path.c_str());
+	return 1;
+}
+static int luaCreateCone(lua_State *L)
+{
+	int n = lua_gettop(L);
+	if (n < 6)
+	{
+		std::cout << "Error: createCone" << std::endl;
+		lua_error(L);
+		return 0;
+	}
+	// 1st meshName
+	// 2nd color
+	// 3rd numslice
+	// 4th radius
+	// 5th height
+	// 6th tga
+
+	const std::string &meshName = lua_tostring(L, 1);
+	Vector3 color;
+
+	lua_pushstring(L, "x");
+	lua_gettable(L, 2);
+	color.x = (float)lua_tonumber(L, -1);
+	lua_pop(L, 1);
+	lua_pushstring(L, "y");
+	lua_gettable(L, 2);
+	color.y = (float)lua_tonumber(L, -1);
+	lua_pop(L, 1);
+	lua_pushstring(L, "z");
+	lua_gettable(L, 2);
+	color.z = (float)lua_tonumber(L, -1);
+	lua_pop(L, 1);
+
+	const float numslice = (float)lua_tonumber(L, 3);
+	const float radius = (float)lua_tonumber(L, 4);
+	const float height = (float)lua_tonumber(L, 5);
+
+	const std::string &tga_path = lua_tostring(L, 6);
+
+	Mesh* tempo;
+	tempo = MeshBuilder::GetInstance()->GenerateCone(meshName, Color(color.x, color.y, color.z), numslice, radius, height);
+	if (tga_path != "")
+		tempo->textureID = LoadTGA(tga_path.c_str());
+	return 1;
+}
+static int luaCreateSpriteAnimation(lua_State *L)
+{
+	int n = lua_gettop(L);
+	if (n < 4)
+	{
+		std::cout << "Error: createSprite" << std::endl;
+		lua_error(L);
+		return 0;
+	}
+	// 1st meshName
+	// 2nd numrow
+	// 3rd numcol
+	// 4th tga
+
+	const std::string &meshName = lua_tostring(L, 1);
+	const float numrow = (float)lua_tonumber(L, 2);
+	const float numcol = (float)lua_tonumber(L, 3);
+	const std::string &tga_path = lua_tostring(L, 4);
+
+	SpriteAnimation* tempo;
+	tempo = MeshBuilder::GetInstance()->GenerateSpriteAnimation(meshName, numrow, numcol);
+	if (tga_path != "")
+		MeshBuilder::GetInstance()->GetMesh(meshName)->textureID = LoadTGA(tga_path.c_str());
 	return 1;
 }
 
@@ -190,6 +462,16 @@ void Application::Init()
 	luaL_openlibs(CLuaInterface::GetInstance()->theMeshLua);
 	lua_register(CLuaInterface::GetInstance()->theMeshLua, "luaCreateMesh", luaCreateMesh);
 	lua_register(CLuaInterface::GetInstance()->theMeshLua, "luaCreateQuad", luaCreateQuad);
+	lua_register(CLuaInterface::GetInstance()->theMeshLua, "luaCreateRay", luaCreateRay);
+	lua_register(CLuaInterface::GetInstance()->theMeshLua, "luaCreateAxes", luaCreateAxes);
+	lua_register(CLuaInterface::GetInstance()->theMeshLua, "luaCreateCrossHair", luaCreateCrossHair);
+	lua_register(CLuaInterface::GetInstance()->theMeshLua, "luaCreateText", luaCreateText);
+	lua_register(CLuaInterface::GetInstance()->theMeshLua, "luaCreateRing", luaCreateRing);
+	lua_register(CLuaInterface::GetInstance()->theMeshLua, "luaCreateSphere", luaCreateSphere);
+	lua_register(CLuaInterface::GetInstance()->theMeshLua, "luaCreateCube", luaCreateCube);
+	lua_register(CLuaInterface::GetInstance()->theMeshLua, "luaCreateCone", luaCreateCone);
+	lua_register(CLuaInterface::GetInstance()->theMeshLua, "luaCreateSpriteAnimation", luaCreateSpriteAnimation);
+
 	luaL_dofile(CLuaInterface::GetInstance()->theMeshLua, "Image//MeshLua.lua");
 	lua_close(CLuaInterface::GetInstance()->theMeshLua);
 
