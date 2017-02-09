@@ -26,25 +26,35 @@ bool CLuaInterface::Init()
 
 	// Create Lua state
 	theLuaState = lua_open();
-
-	if (theLuaState)
-	{
+	if (theLuaState) {
 		// Load lua axuiliary libraries
 		luaL_openlibs(theLuaState);
-
 		// Load lua script
 		luaL_dofile(theLuaState, "Image//DM2240.lua");
-
 		result = true;
 	}
 
-	theErrorState = lua_open();
+	theSavedState = lua_open();
+	if (theSavedState) {
+		// Load lua axuiliary libraries
+		luaL_openlibs(theSavedState);
+		// Load lua script
+		luaL_dofile(theSavedState, "Image//SavedData.lua");
+		result = true;
+	}
 
-	if ((theLuaState) && (theErrorState))
-	{
+	theMeshLua = lua_open();
+	if (theMeshLua) {
+		// Load lua axuiliary libraries
+		luaL_openlibs(theMeshLua);
+		result = true;
+	}
+	theErrorState = lua_open();
+	if ((theLuaState) && (theErrorState) && (theSavedState) && (theMeshLua)) {
 		// 2. Load lua auxiliary libraries
 		luaL_openlibs(theLuaState);
-
+		luaL_openlibs(theSavedState);
+		luaL_openlibs(theMeshLua);
 		// Load the error lua script
 		luaL_dofile(theErrorState, "Image//errorLookup.lua");
 	}
@@ -89,13 +99,11 @@ int CLuaInterface::getIntValue(const char *name)
 	lua_getglobal(theLuaState, name);
 	return lua_tointeger(theLuaState, -1);
 }
-
 float CLuaInterface::getFloatValue(const char *name)
 {
 	lua_getglobal(theLuaState, name);
 	return (float)lua_tonumber(theLuaState, -1);
 }
-
 char CLuaInterface::getCharValue(const char *name)
 {
 	lua_getglobal(theLuaState, name);
@@ -107,7 +115,6 @@ char CLuaInterface::getCharValue(const char *name)
 	else
 		return ' ';
 }
-
 Vector3 CLuaInterface::getVector3Values(const char *name)
 {
 	lua_getglobal(theLuaState, name);
@@ -124,6 +131,46 @@ Vector3 CLuaInterface::getVector3Values(const char *name)
 	float z = (float)lua_tonumber(theLuaState, -1);
 	lua_pop(theLuaState, 1);
 	
+	return Vector3(x, y, z);
+}
+
+int CLuaInterface::getIntValue(lua_State* L, const char *name)
+{
+	lua_getglobal(L, name);
+	return lua_tointeger(theLuaState, -1);
+}
+float CLuaInterface::getFloatValue(lua_State* L, const char *name)
+{
+	lua_getglobal(L, name);
+	return (float)lua_tonumber(theLuaState, -1);
+}
+char CLuaInterface::getCharValue(lua_State* L, const char *name)
+{
+	lua_getglobal(L, name);
+
+	size_t len;
+	const char* cstr = lua_tolstring(L, -1, &len);
+	if (len > 0)
+		return cstr[0];
+	else
+		return ' ';
+}
+Vector3 CLuaInterface::getVector3Values(lua_State* L, const char *name)
+{
+	lua_getglobal(L, name);
+
+	lua_rawgeti(L, -1, 1);
+	float x = (float)lua_tonumber(L, -1);
+	lua_pop(L, 1);
+
+	lua_rawgeti(L, -1, 2);
+	float y = (float)lua_tonumber(L, -1);
+	lua_pop(L, 1);
+
+	lua_rawgeti(L, -1, 3);
+	float z = (float)lua_tonumber(L, -1);
+	lua_pop(L, 1);
+
 	return Vector3(x, y, z);
 }
 
@@ -162,7 +209,7 @@ bool CLuaInterface::getVariableValues(const char *name, int& a, int& b, int& c, 
 	return true;
 }
 
-bool CLuaInterface::saveFloatValue(const char *name, const float& value, const bool& bOverwrite)
+bool CLuaInterface:: saveFloatValue(const char *name, const float& value, const bool& bOverwrite)
 {
 	lua_getglobal(theLuaState, "SaveToLuaFile");
 	char outputString[80];
@@ -186,25 +233,17 @@ bool CLuaInterface::saveIntValue(const char *name, const int& value, const bool&
 	return true;
 }
 
-bool CLuaInterface::saveVector3Values(const char *name, const Vector3& value)
+bool CLuaInterface::saveVector3Values(const char *name, const Vector3& value, const bool& bOverwrite)
 {
 
-	lua_getglobal(theLuaState, name);
-
-	lua_rawgeti(theLuaState, -1, 1);
-	float x = (float)lua_tonumber(theLuaState, -1);
-	lua_pop(theLuaState, 1);
-
-	lua_rawgeti(theLuaState, -1, 2);
-	float y = (float)lua_tonumber(theLuaState, -1);
-	lua_pop(theLuaState, 1);
-
-	lua_rawgeti(theLuaState, -1, 3);
-	float z = (float)lua_tonumber(theLuaState, -1);
-	lua_pop(theLuaState, 1);
-
-	//return Vector3(x, y, z);
-	return 0;
+	lua_getglobal(theLuaState, "SaveToLuaFile");
+	char outputString[80];
+	sprintf_s(outputString, "%s =%s%6.4f,%6.4f,%6.4f%s\n", name, "{",value.x,value.y,value.z,"}");
+	lua_pushstring(theLuaState, outputString);
+	lua_pushinteger(theLuaState, bOverwrite);
+	lua_call(theLuaState, 2, 0);
+	cout << "-------------------------------------";
+	return true;
 }
 
 // Extract a field from a table
@@ -214,13 +253,30 @@ float CLuaInterface::GetField(const char *key)
 
 	// Check if the variables in the Lua stack belongs to a table
 	if (!lua_istable(theLuaState, -1))
-		error("error100");
+		error("Not a table");
 
 	lua_pushstring(theLuaState, key);
 	lua_gettable(theLuaState, -2);
 	if (!lua_isnumber(theLuaState, -1))
-		error("error101");
-	result = (int)lua_tonumber(theLuaState, -1);
+		error("Not a number");
+	result = (float)lua_tonumber(theLuaState, -1);
+	lua_pop(theLuaState, 1);  /* remove number */
+	return result;
+}
+
+string CLuaInterface::GetField_s(const char *key)
+{
+	string result;
+
+	// Check if the variables in the Lua stack belongs to a table
+	if (!lua_istable(theLuaState, -1))
+		error("Not a table");
+
+	lua_pushstring(theLuaState, key);
+	lua_gettable(theLuaState, -2);
+	if (!lua_isnumber(theLuaState, -1))
+		error("Not a number");
+	result = lua_tostring(theLuaState, -1);
 	lua_pop(theLuaState, 1);  /* remove number */
 	return result;
 }
@@ -236,5 +292,5 @@ void CLuaInterface::error(const char *errorCode)
 	if (errorMsg != NULL)
 		cout << errorMsg << endl;
 	else
-		cout << errorCode << " is not valid.\n*** Please contact the developer ***" << endl;
+		cout << errorCode << " is not valid.\n";
 }

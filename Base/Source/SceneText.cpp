@@ -189,7 +189,7 @@ void SceneText::Update(double dt)
 	zGtr->GenerateZombies(playerInfo->GetPos(), type);
 
 	// Incorrect method. But too time consuming to do the correct method for now.
-	if (MouseController::GetInstance()->IsButtonDown(MouseController::LMB)) {
+	if (MouseController::GetInstance()->IsButtonDown(static_cast<MouseController::BUTTON_TYPE>(CLuaInterface::GetInstance()->getIntValue("primary")))) {
 		if (playerInfo->GetFirstWeapon()->GetMagRound() > 0)
 			fireSprite->isPressed = true;
 		else

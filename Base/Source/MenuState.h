@@ -5,6 +5,11 @@
 #include "FPSCamera.h"
 #include "Mesh.h"
 #include "MatrixStack.h"
+#include <string>
+#include <vector>
+
+using std::string;
+using std::vector;
 
 class SpriteEntity;
 class TextEntity;
@@ -24,4 +29,15 @@ private:
 	FPSCamera camera;
 	SpriteEntity* MenuStateBackground;
 	TextEntity* Select;
+
+	enum MENU
+	{
+		STARTGAME,
+		OPTIONS,
+		HIGHSCORE,
+		ACHIEVEMENTS,
+		EXIT
+	};
+
+	MENU menu;
 };

@@ -28,7 +28,8 @@ public:
 
 	int GetWindowHeight();
 	int GetWindowWidth();
-	
+	void ExitGame() { exitGame = true; }
+
 private:
 	Application();
 	~Application();
@@ -39,7 +40,7 @@ private:
 	// Should make these not hard-coded :P
 	int m_window_width;
 	int m_window_height;
-
+	bool exitGame;
 	//Declare a window object
 	StopWatch m_timer;
 

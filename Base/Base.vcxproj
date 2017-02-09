@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\AchievementState.cpp" />
     <ClCompile Include="Source\AnimationHelper.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\AudioManager.cpp" />
@@ -24,6 +25,7 @@
     <ClCompile Include="Source\Gamepad.cpp" />
     <ClCompile Include="Source\GenericEntity.cpp" />
     <ClCompile Include="Source\GroundEntity.cpp" />
+    <ClCompile Include="Source\HighscoreState.cpp" />
     <ClCompile Include="Source\IntroState.cpp" />
     <ClCompile Include="Source\LevelOfDetails\LevelOfDetails.cpp" />
     <ClCompile Include="Source\Light.cpp" />
@@ -31,6 +33,7 @@
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\MenuState.cpp" />
     <ClCompile Include="Source\OBJMesh.cpp" />
+    <ClCompile Include="Source\OptionState.cpp" />
     <ClCompile Include="Source\Physics.cpp" />
     <ClCompile Include="Source\PlayerInfo\PlayerInfo.cpp" />
     <ClCompile Include="Source\Projectile\Grenade.cpp" />
@@ -58,6 +61,7 @@
     <ClCompile Include="Source\Zombi.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\AchievementState.h" />
     <ClInclude Include="Source\AnimationHelper.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\AudioManager.h" />
@@ -71,6 +75,7 @@
     <ClInclude Include="Source\Gamepad.h" />
     <ClInclude Include="Source\GenericEntity.h" />
     <ClInclude Include="Source\GroundEntity.h" />
+    <ClInclude Include="Source\HighscoreState.h" />
     <ClInclude Include="Source\IntroState.h" />
     <ClInclude Include="Source\LevelOfDetails\LevelOfDetails.h" />
     <ClInclude Include="Source\Light.h" />
@@ -82,6 +87,7 @@
     <ClInclude Include="Source\Lua\lualib.h" />
     <ClInclude Include="Source\MenuState.h" />
     <ClInclude Include="Source\OBJMesh.h" />
+    <ClInclude Include="Source\OptionState.h" />
     <ClInclude Include="Source\Physics.h" />
     <ClInclude Include="Source\PlayerInfo\PlayerInfo.h" />
     <ClInclude Include="Source\Projectile\Grenade.h" />

@@ -43,6 +43,8 @@ luaCreateQuad("TextOR",{x=1,y=1,z=1},1,"Image//Text//or.tga")
 luaCreateQuad("TextTOSTART",{x=1,y=1,z=1},1,"Image//Text//tostart.tga")
 luaCreateQuad("Bulletfire",{x=1,y=1,z=1},1,"Image//Projectiles//gunfire.tga")
 luaCreateQuad("GRIDMESH",{x=1,y=0,z=0},1,"")
+luaCreateQuad("INTROSTATE_BACKGROUND",{x=1,y=1,z=1},1,"Image//IntroState//IntroState.tga")
+luaCreateQuad("MENUSTATE_BACKGROUND",{x=1,y=1,z=1},1,"Image//MenuState//MenuState.tga")
 --
 luaCreateRay("laser",10)
 --

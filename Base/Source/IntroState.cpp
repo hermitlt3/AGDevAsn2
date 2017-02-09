@@ -31,9 +31,6 @@ void CIntroState::Init()
 	camera.Init(Vector3(0, 0, 10), Vector3(0, 0, 0), Vector3(0, 1, 0));
 	GraphicsManager::GetInstance()->AttachCamera(&camera);
 
-	MeshBuilder::GetInstance()->GenerateQuad("INTROSTATE_BACKGROUND", Color(1, 1, 1), 1.f);
-	MeshBuilder::GetInstance()->GetMesh("INTROSTATE_BACKGROUND")->textureID = LoadTGA("Image//IntroState//IntroState.tga");
-
 	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.f;
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.f;
 

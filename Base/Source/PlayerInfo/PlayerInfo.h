@@ -125,4 +125,8 @@ private:
 	char keyMoveBackward;
 	char keyMoveLeft;
 	char keyMoveRight;
+	char keyMoveReload;
+	char keyMoveSecondary;
+	char keyMovePrimary;
+	char keyMoveJump;
 };

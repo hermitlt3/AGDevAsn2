@@ -33,21 +33,28 @@ public:
 	lua_State *theLuaState; 
 	lua_State *theErrorState;
 	lua_State *theMeshLua;
+	lua_State *theSavedState;
 
 	int getIntValue(const char *name);
 	float getFloatValue(const char *name);
 	char getCharValue(const char *name);
 	Vector3 getVector3Values(const char *name);
 
+	int getIntValue(lua_State* L, const char *name);
+	float getFloatValue(lua_State* L, const char *name);
+	char getCharValue(lua_State* L, const char *name);
+	Vector3 getVector3Values(lua_State* L, const char *name);
+
 	bool getVariableValues(const char *name, int &a, int&b, int&c, int&d);
 
 	bool saveIntValue(const char *name, const int& value, const bool& bOverwrite = false);
 	bool saveFloatValue(const char *name, const float& value, const bool& bOverwrite = false);
-	bool saveVector3Values(const char *name, const Vector3& value);
+	bool saveVector3Values(const char *name, const Vector3& value, const bool& bOverwrite = false);
 
 	float getDistanceSquareValue(const char *name, Vector3 source, Vector3 destination);
 	// Extract a field from a table
 	float GetField(const char *key);
+	std::string GetField_s(const char *key);
 
 	// Get error message using an error code
 	void error(const char *errorCode);

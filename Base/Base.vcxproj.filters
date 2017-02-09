@@ -213,6 +213,15 @@
     <ClCompile Include="Source\IntroState.cpp">
       <Filter>GameStateManager</Filter>
     </ClCompile>
+    <ClCompile Include="Source\AchievementState.cpp">
+      <Filter>GameStateManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\HighscoreState.cpp">
+      <Filter>GameStateManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\OptionState.cpp">
+      <Filter>GameStateManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -360,6 +369,15 @@
       <Filter>GameStateManager</Filter>
     </ClInclude>
     <ClInclude Include="Source\MenuState.h">
+      <Filter>GameStateManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AchievementState.h">
+      <Filter>GameStateManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HighscoreState.h">
+      <Filter>GameStateManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\OptionState.h">
       <Filter>GameStateManager</Filter>
     </ClInclude>
   </ItemGroup>

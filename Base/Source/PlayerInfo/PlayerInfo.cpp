@@ -33,6 +33,9 @@ CPlayerInfo::CPlayerInfo(void)
 , keyMoveBackward('S')
 , keyMoveLeft('A')
 , keyMoveRight('D')
+, keyMoveJump(VK_SPACE)
+, keyMovePrimary(MouseController::LMB)
+, keyMoveSecondary(MouseController::RMB)
 {
 
 }
@@ -55,15 +58,22 @@ CPlayerInfo::~CPlayerInfo(void)
 // Initialise this class instance
 void CPlayerInfo::Init(void)
 {
+	Vector3 startPos;
+	startPos = CLuaInterface::GetInstance()->getVector3Values("CPlayerInfoStartPos");
+	Vector3 startTarget;
+	startTarget = CLuaInterface::GetInstance()->getVector3Values("CPlayerInfoStartTarget");
+	Vector3 startUp;
+	startUp = CLuaInterface::GetInstance()->getVector3Values("CPlayerInfoStartUp");
+
 	// Set the default values
-	defaultPosition.Set(0, 0, 400);
-	defaultTarget.Set(0, 0, 0);
-	defaultUp.Set(0, 1, 0);
+	defaultPosition = startPos;
+	defaultTarget = startTarget;
+	defaultUp = startUp;
 
 	// Set the current values
-	position.Set(400, 0, 0);
-	target.Set(0, 0, 0);
-	up.Set(0, 1, 0);
+	position = startPos;
+	target = startTarget;
+	up = startUp;
 
 	// Set Boundary
 	maxBoundary.Set(1, 1, 1);
@@ -82,7 +92,10 @@ void CPlayerInfo::Init(void)
 	keyMoveBackward = CLuaInterface::GetInstance()->getCharValue("moveBackward");
 	keyMoveLeft		= CLuaInterface::GetInstance()->getCharValue("moveLeft");
 	keyMoveRight	 = CLuaInterface::GetInstance()->getCharValue("moveRight");
-
+	keyMoveJump = CLuaInterface::GetInstance()->getIntValue("jump");
+	keyMovePrimary = static_cast<MouseController::BUTTON_TYPE>(CLuaInterface::GetInstance()->getIntValue("primary"));
+	keyMoveSecondary = static_cast<MouseController::BUTTON_TYPE>(CLuaInterface::GetInstance()->getIntValue("secondary"));
+	keyMoveReload = CLuaInterface::GetInstance()->getCharValue("reload");
 }
 
 // Returns true if the player is on ground
@@ -473,7 +486,7 @@ void CPlayerInfo::Update(double dt)
 	}
 
 	// If the user presses SPACEBAR, then make him jump
-	if ((KeyboardController::GetInstance()->IsKeyDown(VK_SPACE)
+	if ((KeyboardController::GetInstance()->IsKeyDown(keyMoveJump)
 		|| Gamepad1->GetButtonDown(XButtons.A)) &&
 		position.y == m_pTerrain->GetTerrainHeight(position))
 	{
@@ -481,7 +494,7 @@ void CPlayerInfo::Update(double dt)
 	}
 
 	// Update the weapons
-	if (KeyboardController::GetInstance()->IsKeyReleased('R')
+	if (KeyboardController::GetInstance()->IsKeyReleased(keyMoveReload)
 		|| Gamepad1->GetButtonDown(XButtons.Y))
 	{
 		if (primaryWeapon)
@@ -502,13 +515,13 @@ void CPlayerInfo::Update(double dt)
 
 	// if Mouse Buttons were activated, then act on them
 	//if (MouseController::GetInstance()->IsButtonPressed(MouseController::LMB)
-	if (MouseController::GetInstance()->IsButtonDown(MouseController::LMB)
+	if (MouseController::GetInstance()->IsButtonDown(keyMovePrimary)
 		|| Gamepad1->GetButtonDown(XButtons.R_Shoulder))
 	{
 		if (primaryWeapon)
 			primaryWeapon->Discharge(position, target, this);
 	}
-	else if (MouseController::GetInstance()->IsButtonPressed(MouseController::RMB)
+	else if (MouseController::GetInstance()->IsButtonPressed(keyMoveSecondary)
 		|| Gamepad1->GetButtonDown(XButtons.L_Shoulder))
 	{
 		if (secondaryWeapon)

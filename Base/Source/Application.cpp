@@ -16,6 +16,9 @@
 #include <stdlib.h>
 
 #include "SceneText.h"
+#include "OptionState.h"
+#include "HighscoreState.h"
+#include "AchievementState.h"
 #include "Lua/LuaInterface.h"
 #include "MeshBuilder.h"
 #include "SpriteAnimation.h"
@@ -188,8 +191,8 @@ static int luaCreateText(lua_State *L)
 	// 4th tgapath
 
 	const std::string &meshName = lua_tostring(L, 1);
-	const float rows = (float)lua_tonumber(L, 2);
-	const float cols = (float)lua_tonumber(L, 3);
+	const int rows = lua_tonumber(L, 2);
+	const int cols = lua_tonumber(L, 3);
 	const std::string &tga_path = lua_tostring(L, 4);
 
 	Mesh* tempo;
@@ -400,10 +403,9 @@ void Application::Init()
 
 	m_window_width = CLuaInterface::GetInstance()->getIntValue("width");
 	m_window_height = CLuaInterface::GetInstance()->getIntValue("height");
+	exitGame = false;
 
 	CLuaInterface::GetInstance()->Run();
-	CLuaInterface::GetInstance()->saveFloatValue("Player1", 200.10, true);
-	CLuaInterface::GetInstance()->saveIntValue("Player2", 100);
 
 	//Set the error callback
 	glfwSetErrorCallback(error_callback);
@@ -458,8 +460,6 @@ void Application::Init()
 	// Init systems
 	GraphicsManager::GetInstance()->Init();
 
-	CLuaInterface::GetInstance()->theMeshLua = lua_open();
-	luaL_openlibs(CLuaInterface::GetInstance()->theMeshLua);
 	lua_register(CLuaInterface::GetInstance()->theMeshLua, "luaCreateMesh", luaCreateMesh);
 	lua_register(CLuaInterface::GetInstance()->theMeshLua, "luaCreateQuad", luaCreateQuad);
 	lua_register(CLuaInterface::GetInstance()->theMeshLua, "luaCreateRay", luaCreateRay);
@@ -478,7 +478,11 @@ void Application::Init()
 	SceneManager::GetInstance()->AddScene("IntroState", new CIntroState());
 	SceneManager::GetInstance()->AddScene("MenuState", new CMenuState());
 	SceneManager::GetInstance()->AddScene("GameState", new SceneText());
-	
+	SceneManager::GetInstance()->AddScene("OptionState", new COptionState());
+	SceneManager::GetInstance()->AddScene("HighscoreState", new CHighscoreState());
+	SceneManager::GetInstance()->AddScene("AchievementState", new CAchievementState());
+
+
 	SceneManager::GetInstance()->SetActiveScene("IntroState");
 	AudioManager::GetInstance()->Init();
 }
@@ -535,11 +539,14 @@ void Application::Run()
 {
 	InitDisplay();
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
-	while (!glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE))
+	while (!glfwWindowShouldClose(m_window) && !exitGame)
 	{
 		glfwPollEvents();
 		UpdateInput();
 		
+		if (IsKeyPressed(VK_ESCAPE))
+			exitGame = true;
+
 		SceneManager::GetInstance()->Update(m_timer.getElapsedTime());
 		SceneManager::GetInstance()->Render();
 

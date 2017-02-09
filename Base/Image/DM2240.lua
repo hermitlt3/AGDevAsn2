@@ -2,9 +2,9 @@ function SaveToLuaFile(outputString, overwrite)
    print("SaveToLuaFile...")
    local f;						-- The file
    if overwrite == 1 then		-- Wipe the contents with new data
-      f = assert(io.open("Image/DM2240_HighScore.lua", "w"))
+      f = assert(io.open("Image/SavedData.lua", "w"))
    elseif overwrite == 0 then	-- Append with new data
-      f = assert(io.open("Image/DM2240_HighScore.lua", "a"))
+      f = assert(io.open("Image/SavedData.lua", "a"))
    end
    -- Write to the file
    f:write(outputString)
@@ -43,13 +43,14 @@ moveBackward 	= "S"
 moveLeft		= "A"
 moveRight		= "D"
 reload			= "R"
-inventory		= "I"
-
--- MenuState select index
-MenuStateSelectPos = 0
+jump			= 32
+secondary		= 1
+primary			= 0
 
 -- CPlayerInfo start position
-CPlayerInfoStartPos = {0, 0, 10}
+CPlayerInfoStartPos = {400, 0, 0}
+CPlayerInfoStartTarget = {0, 0, 0}
+CPlayerInfoStartUp = {0, 1, 0}
 
 -- Way points
 Waypoint_A_1 = {x=10.0, y=0.0, z=50.0}
