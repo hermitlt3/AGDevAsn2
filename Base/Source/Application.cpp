@@ -85,28 +85,33 @@ static int luaCreateMesh(lua_State *L)
 static int luaCreateQuad(lua_State *L)
 {
 	int n = lua_gettop(L);
-	if (n < 4)
+	if (n < 6)
 	{
 		std::cout << "Error: createQuad" << std::endl;
 		lua_error(L);
 		return 0;
 	}
 	// 1st meshName
-	// 2nd color
-	// 3rd length
-	// 4th tgapath
+	// 2nd color.x
+	// 3rd color.y
+	// 4th color.z
+	// 5th length
+	// 6th tgapath
 
 	const std::string &meshName = lua_tostring(L, 1);
-	//const Vector3 color = lua_(L, 2);
-	const float length = (float)lua_tonumber(L, 3);
-	const std::string &tga_path = lua_tostring(L, 4);
+	Vector3 color;
+	color.x = (float)lua_tonumber(L, 2);
+	color.y = (float)lua_tonumber(L, 3);
+	color.z = (float)lua_tonumber(L, 4);
+	const float length = (float)lua_tonumber(L, 5);
+	const std::string &tga_path = lua_tostring(L, 6);
 
 	Mesh* tempo;
-	tempo = MeshBuilder::GetInstance()->GenerateQuad(meshName, obj_path);
+	tempo = MeshBuilder::GetInstance()->GenerateQuad(meshName, Color(color.x, color.y, color.z), length);
 	tempo->textureID = LoadTGA(tga_path.c_str());
 	return 1;
-	return 1;
 }
+
 void Application::Init()
 {
 	// Initialise the Lua system
