@@ -85,26 +85,35 @@ static int luaCreateMesh(lua_State *L)
 static int luaCreateQuad(lua_State *L)
 {
 	int n = lua_gettop(L);
-	if (n < 6)
+	/*if (n < 4)
 	{
 		std::cout << "Error: createQuad" << std::endl;
 		lua_error(L);
 		return 0;
-	}
+	}*/
 	// 1st meshName
-	// 2nd color.x
-	// 3rd color.y
-	// 4th color.z
-	// 5th length
-	// 6th tgapath
+	// 2nd color
+	// 3rd length
+	// 4th tgapath
 
 	const std::string &meshName = lua_tostring(L, 1);
 	Vector3 color;
-	color.x = (float)lua_tonumber(L, 2);
-	color.y = (float)lua_tonumber(L, 3);
-	color.z = (float)lua_tonumber(L, 4);
-	const float length = (float)lua_tonumber(L, 5);
-	const std::string &tga_path = lua_tostring(L, 6);
+
+	lua_pushstring(L, "x");
+	lua_gettable(L, 2);
+	color.x = (float)lua_tonumber(L, -1);
+	lua_pop(L, 1);
+	lua_pushstring(L, "y");
+	lua_gettable(L, 2);
+	color.y = (float)lua_tonumber(L, -1);
+	lua_pop(L, 1);
+	lua_pushstring(L, "z");
+	lua_gettable(L, 2);
+	color.z = (float)lua_tonumber(L, -1);
+	lua_pop(L, 1);
+
+	const float length = (float)lua_tonumber(L, 3);
+	const std::string &tga_path = lua_tostring(L, 4);
 
 	Mesh* tempo;
 	tempo = MeshBuilder::GetInstance()->GenerateQuad(meshName, Color(color.x, color.y, color.z), length);
