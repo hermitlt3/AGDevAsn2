@@ -27,6 +27,14 @@ CMenuState::~CMenuState()
 
 void CMenuState::Init()
 {
+	lua_State* menuState = lua_open();
+	if (menuState) {
+		// Load lua axuiliary libraries
+		luaL_openlibs(menuState);
+		// Load lua script
+		luaL_dofile(menuState, "Image//Menu.lua");
+	}
+
 	camera.Init(Vector3(0, 0, 10), Vector3(0, 0, 0), Vector3(0, 1, 0));
 
 	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.f;
@@ -34,8 +42,10 @@ void CMenuState::Init()
 	MenuStateBackground = Create::Sprite2DObject("MENUSTATE_BACKGROUND", Vector3(halfWindowWidth, halfWindowHeight, -9.f), Vector3(halfWindowWidth * 2, halfWindowHeight * 2, 0.f));
 	Select = Create::Text2DObject("text", Vector3(400, 320, 0), ">", Vector3(50, 50, 2), Color(0.f, 0.0f, 0.0f));
 	int i;
-	i = CLuaInterface::GetInstance()->getIntValue("MenuStateSelectPos");
-	menu = static_cast<MENU>(i);
+	i = CLuaInterface::GetInstance()->getIntValue(menuState, "MenuStateSelectPos");
+	menu = static_cast<MENU>(i); 
+
+	lua_close(menuState);
 }
 
 void CMenuState::Update(double _dt)
@@ -108,6 +118,6 @@ void CMenuState::Exit()
 {
 	EntityManager::GetInstance()->RemoveEntity(MenuStateBackground);
 	EntityManager::GetInstance()->RemoveEntity(Select);
-	CLuaInterface::GetInstance()->saveIntValue("MenuStateSelectPos", static_cast<int>(menu), true);
+	CLuaInterface::GetInstance()->saveIntValue("MenuStateSelectPos", "Image//Menu.lua", static_cast<int>(menu), true);
 	GraphicsManager::GetInstance()->DetachCamera();
 }

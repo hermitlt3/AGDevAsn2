@@ -1,10 +1,10 @@
-function SaveToLuaFile(outputString, overwrite)
+function SaveToLuaFile(outputString, overwrite, path)
    print("SaveToLuaFile...")
    local f;						-- The file
    if overwrite == 1 then		-- Wipe the contents with new data
-      f = assert(io.open("Image/SavedData.lua", "w"))
+      f = assert(io.open(path, "w"))
    elseif overwrite == 0 then	-- Append with new data
-      f = assert(io.open("Image/SavedData.lua", "a"))
+      f = assert(io.open(path, "a"))
    end
    -- Write to the file
    f:write(outputString)
@@ -38,7 +38,7 @@ width = 800
 height = 600
 
 -- Keyboard Inputs
-moveForward 	= "W"
+moveForward 	= "L"
 moveBackward 	= "S"
 moveLeft		= "A"
 moveRight		= "D"

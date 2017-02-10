@@ -149,12 +149,12 @@ Vector3 CLuaInterface::getVector3Values(const char *name)
 int CLuaInterface::getIntValue(lua_State* L, const char *name)
 {
 	lua_getglobal(L, name);
-	return lua_tointeger(theLuaState, -1);
+	return lua_tointeger(L, -1);
 }
 float CLuaInterface::getFloatValue(lua_State* L, const char *name)
 {
 	lua_getglobal(L, name);
-	return (float)lua_tonumber(theLuaState, -1);
+	return (float)lua_tonumber(L, -1);
 }
 char CLuaInterface::getCharValue(lua_State* L, const char *name)
 {
@@ -221,31 +221,33 @@ bool CLuaInterface::getVariableValues(const char *name, int& a, int& b, int& c, 
 	return true;
 }
 
-bool CLuaInterface:: saveFloatValue(const char *name, const float& value, const bool& bOverwrite)
+bool CLuaInterface::saveFloatValue(const char *name, const char *path, const float& value, const bool& bOverwrite)
 {
 	lua_getglobal(theLuaState, "SaveToLuaFile");
 	char outputString[80];
 	sprintf_s(outputString, "%s = %6.4f\n", name, value);
 	lua_pushstring(theLuaState, outputString);
 	lua_pushinteger(theLuaState, bOverwrite);
-	lua_call(theLuaState, 2, 0);
+	lua_pushstring(theLuaState, path);
+	lua_call(theLuaState, 3, 0);
 	cout << "-------------------------------------";
 	return true;
 }
 
-bool CLuaInterface::saveIntValue(const char *name, const int& value, const bool& bOverwrite)
+bool CLuaInterface::saveIntValue(const char *name, const char *path, const int& value, const bool& bOverwrite)
 {
 	lua_getglobal(theLuaState, "SaveToLuaFile");
 	char outputString[80];
 	sprintf_s(outputString, "%s = %d\n", name, value);
 	lua_pushstring(theLuaState, outputString);
 	lua_pushinteger(theLuaState, bOverwrite);
-	lua_call(theLuaState, 2, 0);
+	lua_pushstring(theLuaState, path);
+	lua_call(theLuaState, 3, 0);
 	cout << "-------------------------------------";
 	return true;
 }
 
-bool CLuaInterface::saveVector3Values(const char *name, const Vector3& value, const bool& bOverwrite)
+bool CLuaInterface::saveVector3Values(const char *name, const char *path, const Vector3& value, const bool& bOverwrite)
 {
 
 	lua_getglobal(theLuaState, "SaveToLuaFile");
@@ -253,7 +255,8 @@ bool CLuaInterface::saveVector3Values(const char *name, const Vector3& value, co
 	sprintf_s(outputString, "%s =%s%6.4f,%6.4f,%6.4f%s\n", name, "{",value.x,value.y,value.z,"}");
 	lua_pushstring(theLuaState, outputString);
 	lua_pushinteger(theLuaState, bOverwrite);
-	lua_call(theLuaState, 2, 0);
+	lua_pushstring(theLuaState, path);
+	lua_call(theLuaState, 3, 0);
 	cout << "-------------------------------------";
 	return true;
 }

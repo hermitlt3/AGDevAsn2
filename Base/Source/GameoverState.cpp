@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-#include "IntroState.h"
+#include "GameoverState.h"
 #include "GL\glew.h"
 #include "Application.h"
 #include "LoadTGA.h"
@@ -16,17 +16,18 @@ using namespace std;
 
 #include "EntityManager.h"
 #include "Lua\LuaInterface.h"
-CIntroState::CIntroState()
+
+GameoverState::GameoverState()
 {
 
 }
 
-CIntroState::~CIntroState()
+GameoverState::~GameoverState()
 {
 
 }
 
-void CIntroState::Init()
+void GameoverState::Init()
 {
 	camera.Init(Vector3(0, 0, 10), Vector3(0, 0, 0), Vector3(0, 1, 0));
 	GraphicsManager::GetInstance()->AttachCamera(&camera);
@@ -34,21 +35,17 @@ void CIntroState::Init()
 	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.f;
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.f;
 
-	IntroStateBackground = Create::Sprite2DObject("INTROSTATE_BACKGROUND", Vector3(halfWindowWidth, halfWindowHeight, 0.f), Vector3(halfWindowWidth * 2, halfWindowHeight * 2, 0.f));
+	GameOverBackground = Create::Sprite2DObject("GAMEOVER_BACKGROUND", Vector3(halfWindowWidth, halfWindowHeight, 0.f), Vector3(halfWindowWidth * 2, halfWindowHeight * 2, 0.f));
 
-	cout << "CIntroState loaded\n" << endl;
+	cout << "GameoverState loaded\n" << endl;
 }
 
-void CIntroState::Update(double _dt)
+void GameoverState::Update(double _dt)
 {
-	if (KeyboardController::GetInstance()->IsKeyReleased(VK_SPACE))
-	{
-		cout << "Loading MenuState" << endl;
-		SceneManager::GetInstance()->SetActiveScene("MenuState");
-	}
+
 }
 
-void CIntroState::Render()
+void GameoverState::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -63,8 +60,8 @@ void CIntroState::Render()
 	EntityManager::GetInstance()->RenderUI();
 }
 
-void CIntroState::Exit()
+void GameoverState::Exit()
 {
-	EntityManager::GetInstance()->RemoveEntity(IntroStateBackground);
+	EntityManager::GetInstance()->RemoveEntity(GameOverBackground);
 	GraphicsManager::GetInstance()->DetachCamera();
 }

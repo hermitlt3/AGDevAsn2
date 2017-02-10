@@ -149,7 +149,7 @@ void COptionState::Render()
 void COptionState::Exit()
 {
 	EntityManager::GetInstance()->RemoveEntity(OptionStateBackground);
-	MeshBuilder::GetInstance()->RemoveMesh("INTROSTATE_BACKGROUND");
-	CLuaInterface::GetInstance()->saveIntValue("MenuStateSelectPos", option);
+	EntityManager::GetInstance()->RemoveEntity(Select);
+	//CLuaInterface::GetInstance()->saveIntValue("MenuStateSelectPos", option);
 	GraphicsManager::GetInstance()->DetachCamera();
 }

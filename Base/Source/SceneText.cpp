@@ -214,6 +214,7 @@ void SceneText::Update(double dt)
 			endGame = true;
 			gameTimer = 0.0;
 			winlose = 0;
+			SceneManager::GetInstance()->SetActiveScene("GameoverState");
 		}
 	}
 	else
@@ -224,6 +225,7 @@ void SceneText::Update(double dt)
 			AudioManager::GetInstance()->Sound_Engine->play2D("Music/Win.mp3", false);
 			gameTimer = 0.0;
 			winlose = 1;
+			SceneManager::GetInstance()->SetActiveScene("GameoverState");
 		}
 	}
 	// Update our entities

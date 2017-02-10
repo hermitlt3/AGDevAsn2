@@ -24,6 +24,7 @@
 #include "SpriteAnimation.h"
 #include "LoadTGA.h"
 #include "Vector3.h"
+#include "GameoverState.h"
 
 GLFWwindow* m_window;
 const unsigned char FPS = 60; // FPS of this game
@@ -481,6 +482,7 @@ void Application::Init()
 	SceneManager::GetInstance()->AddScene("OptionState", new COptionState());
 	SceneManager::GetInstance()->AddScene("HighscoreState", new CHighscoreState());
 	SceneManager::GetInstance()->AddScene("AchievementState", new CAchievementState());
+	SceneManager::GetInstance()->AddScene("GameoverState", new GameoverState());
 
 
 	SceneManager::GetInstance()->SetActiveScene("IntroState");

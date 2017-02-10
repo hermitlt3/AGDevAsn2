@@ -47,9 +47,9 @@ public:
 
 	bool getVariableValues(const char *name, int &a, int&b, int&c, int&d);
 
-	bool saveIntValue(const char *name, const int& value, const bool& bOverwrite = false);
-	bool saveFloatValue(const char *name, const float& value, const bool& bOverwrite = false);
-	bool saveVector3Values(const char *name, const Vector3& value, const bool& bOverwrite = false);
+	bool saveIntValue(const char *name, const char *path, const int& value, const bool& bOverwrite = false);
+	bool saveFloatValue(const char *name, const char *path, const float& value, const bool& bOverwrite = false);
+	bool saveVector3Values(const char *name, const char *path, const Vector3& value, const bool& bOverwrite = false);
 
 	float getDistanceSquareValue(const char *name, Vector3 source, Vector3 destination);
 	// Extract a field from a table

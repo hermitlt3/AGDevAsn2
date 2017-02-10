@@ -107,6 +107,6 @@ void CHighscoreState::Exit()
 {
 	EntityManager::GetInstance()->RemoveEntity(MenuStateBackground);
 	MeshBuilder::GetInstance()->RemoveMesh("MENUSTATE_BACKGROUND");
-	CLuaInterface::GetInstance()->saveIntValue("MenuStateSelectPos", menu);
+	CLuaInterface::GetInstance()->saveIntValue("MenuStateSelectPos", "Menu.lua", menu);
 	GraphicsManager::GetInstance()->DetachCamera();
 }
