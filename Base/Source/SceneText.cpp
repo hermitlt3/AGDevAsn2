@@ -184,21 +184,10 @@ void SceneText::Update(double dt)
 	if (!theNPC->GetIsDead())
 		theNPC->Update(dt);
 	
-	if (theZombie->GetIsDead() && !startZGenerate) {
-		zGtr->SetGenerate(true);
-		type = "stevie";
-		startZGenerate = true;
-		theNPC->Kill();
-		startGame = true;
+	if (theZombie->GetIsDead() && theNPC->GetIsDead()) {
+		endGame = true;
 	}
-	else if (theNPC->GetIsDead() && !startSGenerate) {
-		zGtr->SetGenerate(true);
-		type = "zombie";
-		startSGenerate = true;
-		theZombie->Kill();
-		startGame = true;
-	}
-	zGtr->GenerateZombies(playerInfo->GetPos(), type);
+	//zGtr->GenerateZombies(playerInfo->GetPos(), type);
 
 	// Incorrect method. But too time consuming to do the correct method for now.
 	if (MouseController::GetInstance()->IsButtonDown(MouseController::LMB)) {
@@ -211,10 +200,8 @@ void SceneText::Update(double dt)
 		fireSprite->ownTimer = fireSprite->stopTimer;
 		fireSprite->isPressed = false;
 	}
-	if (zGtr->IsAllDead() && (theZombie->GetIsDead() || theNPC->GetIsDead()))
-		endGame = true;
-
-	if (startGame && !endGame)
+	
+	if (!endGame)
 	{
 		gameTimer -= dt;
 	}

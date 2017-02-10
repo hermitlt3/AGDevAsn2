@@ -89,7 +89,7 @@ void CZombie::Update(double dt)
 	
 	if (CSceneGraph::GetInstance()->GetNode(bodyParts[3]) && CSceneGraph::GetInstance()->GetNode(bodyParts[0])) {
 		p = CSceneGraph::GetInstance()->GetNode(bodyParts[3])->GetNodeLocalTransform().GetTranslate();
-	
+
 
 		switch (state)
 		{
@@ -165,6 +165,8 @@ void CZombie::Update(double dt)
 		}
 		}
 	}
+	else
+		isDead = true;
 }
 
 void CZombie::Kill()
