@@ -27,17 +27,26 @@ public:
 
 private:
 	FPSCamera camera;
-	SpriteEntity* MenuStateBackground;
+	SpriteEntity* OptionStateBackground;
 	TextEntity* Select;
 
-	enum MENU
+	enum OPTIONS
 	{
-		STARTGAME,
-		OPTIONS,
-		HIGHSCORE,
-		ACHIEVEMENTS,
-		EXIT
+		MOVEFORWARD = 0,
+		MOVEBACKWARD,
+		MOVELEFT,
+		MOVERIGHT,
+		RELOAD,
+		JUMP,
+		SECONDARY,
+		PRIMARY
 	};
+	OPTIONS option;
 
-	MENU menu;
+	enum STATE
+	{
+		CHOOSE = 0,
+		SELECTED
+	};
+	STATE state;
 };

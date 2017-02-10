@@ -32,7 +32,7 @@ private:
 
 	enum MENU
 	{
-		STARTGAME,
+		STARTGAME = 0,
 		OPTIONS,
 		HIGHSCORE,
 		ACHIEVEMENTS,

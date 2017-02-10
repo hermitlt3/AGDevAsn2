@@ -37,3 +37,19 @@ bool KeyboardController::IsKeyReleased(unsigned char _slot)
 {
 	return IsKeyUp(_slot) && prevStatus.test(_slot);
 }
+
+int KeyboardController::ReturnKey()
+{
+	for (int i = 0; i < KeyboardController::MAX_KEYS; ++i) {
+		if (IsKeyPressed(i))
+			return i;
+	}
+}
+
+bool KeyboardController::AnyKeyPressed()
+{
+	for (int i = 0; i < KeyboardController::MAX_KEYS; ++i) {
+		if (IsKeyPressed(i))
+			return true;
+	}
+}

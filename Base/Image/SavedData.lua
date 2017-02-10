@@ -1,1 +1,1 @@
-MenuStateSelectPos = 3
+MenuStateSelectPos = 0

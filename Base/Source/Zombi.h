@@ -5,7 +5,7 @@
 class Mesh;
 class GroundEntity;
 class GenericEntity;
-
+class CPlayerInfo;
 class CZombie
 {
 public:
@@ -31,18 +31,28 @@ public:
 		wayPoints[3] = d;
 	}
 
+	void FSM();
 	void SetTarget(Vector3 target) { this->target = target; }
+	void SetPlayer(CPlayerInfo *player) { this->player = player; }
 	void Kill();
 private:
 	GroundEntity* m_pTerrain;
 	GenericEntity* bodyParts[6];
-
+	CPlayerInfo* player;
 	Vector3 wayPoints[4];
 	Vector3 target;
-
+	Vector3 p;
 	double m_dSpeed;
 	bool legless;
 	bool isDead;
 	int waypointIndex;
 	int currIndex;
+	bool NotInjured();
+	enum AI_STATES
+	{
+		PETROL = 0,
+		CHASE,
+		RETURN,
+		DIE
+	}; AI_STATES state;
 };

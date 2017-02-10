@@ -39,7 +39,7 @@ void ZGenerator::GenerateZombies(Vector3 target, std::string type)
 {
 	if (doGenerate)
 	{
-		for (int i = 0; i < 5; ++i)
+		/*for (int i = 0; i < 5; ++i)
 		{
 			Vector3 a;
 			a = Vector3(Math::RandFloatMinMax(areaStart.x, areaEnd.x), -3, Math::RandFloatMinMax(areaStart.z, areaEnd.z));
@@ -70,7 +70,7 @@ void ZGenerator::GenerateZombies(Vector3 target, std::string type)
 				stevs[i] = stevie;
 			}
 		}
-		doGenerate = false;
+		doGenerate = false;*/
 	}
 }
 

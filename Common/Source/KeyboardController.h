@@ -21,6 +21,9 @@ public:
 	bool IsKeyPressed(unsigned char _slot);
 	bool IsKeyReleased(unsigned char _slot);
 
+	int ReturnKey();
+	bool AnyKeyPressed();
+
 private:
 	KeyboardController();
 	~KeyboardController();

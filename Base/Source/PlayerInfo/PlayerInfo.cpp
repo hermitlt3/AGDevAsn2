@@ -92,10 +92,10 @@ void CPlayerInfo::Init(void)
 	keyMoveBackward = CLuaInterface::GetInstance()->getCharValue("moveBackward");
 	keyMoveLeft		= CLuaInterface::GetInstance()->getCharValue("moveLeft");
 	keyMoveRight	 = CLuaInterface::GetInstance()->getCharValue("moveRight");
-	keyMoveJump = CLuaInterface::GetInstance()->getIntValue("jump");
+	/*keyMoveJump = CLuaInterface::GetInstance()->getIntValue("jump");
 	keyMovePrimary = static_cast<MouseController::BUTTON_TYPE>(CLuaInterface::GetInstance()->getIntValue("primary"));
 	keyMoveSecondary = static_cast<MouseController::BUTTON_TYPE>(CLuaInterface::GetInstance()->getIntValue("secondary"));
-	keyMoveReload = CLuaInterface::GetInstance()->getCharValue("reload");
+	keyMoveReload = CLuaInterface::GetInstance()->getCharValue("reload");*/
 }
 
 // Returns true if the player is on ground

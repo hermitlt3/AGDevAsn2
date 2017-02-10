@@ -70,6 +70,5 @@ void CIntroState::Render()
 void CIntroState::Exit()
 {
 	EntityManager::GetInstance()->RemoveEntity(IntroStateBackground);
-	MeshBuilder::GetInstance()->RemoveMesh("INTROSTATE_BACKGROUND");
 	GraphicsManager::GetInstance()->DetachCamera();
 }

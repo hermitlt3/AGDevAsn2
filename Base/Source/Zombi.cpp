@@ -7,7 +7,7 @@
 #include "SceneGraph/SceneNode.h"
 #include "SceneGraph/SceneGraph.h"
 #include "AudioManager.h"
-
+#include "PlayerInfo\PlayerInfo.h"
 CZombie::CZombie() :
 m_pTerrain(NULL),
 legless(false),
@@ -55,6 +55,7 @@ void CZombie::Init(Vector3 pos)
 	for (int i = 0; i < 6; ++i) {
 		CSpatialPartition::GetInstance()->Add(bodyParts[i]);
 	}
+	state = PETROL;
 }
 
 // Set the terrain for the player info
@@ -75,7 +76,6 @@ GroundEntity* CZombie::GetTerrain(void)
 // Update
 void CZombie::Update(double dt)
 {
-	Vector3 p;
 	if (!CSceneGraph::GetInstance()->GetNode(bodyParts[4]) &&
 		!CSceneGraph::GetInstance()->GetNode(bodyParts[5]))
 	{
@@ -87,57 +87,146 @@ void CZombie::Update(double dt)
 		}
 	}
 	
-
-	if (CSceneGraph::GetInstance()->GetNode(bodyParts[3])) {
+	if (CSceneGraph::GetInstance()->GetNode(bodyParts[3]) && CSceneGraph::GetInstance()->GetNode(bodyParts[0])) {
 		p = CSceneGraph::GetInstance()->GetNode(bodyParts[3])->GetNodeLocalTransform().GetTranslate();
-		if (target.y != -1000.f) {
-			Vector3 movingtowards;
-			movingtowards = (target - CSceneGraph::GetInstance()->GetNode(bodyParts[3])->GetNodeLocalTransform().GetTranslate()).Normalized();
+	
 
-			if (CSceneGraph::GetInstance()->GetNode(bodyParts[3]))
-				CSceneGraph::GetInstance()->GetNode(bodyParts[3])->ApplyTranslate(dt * movingtowards.x * m_dSpeed, 0, 0);
-		}
-		else
+		switch (state)
 		{
-			if (CSceneGraph::GetInstance()->GetNode(bodyParts[3])->GetNodeLocalTransform().GetTranslate().x <
-				wayPoints[waypointIndex].x + 1.f &&
-				CSceneGraph::GetInstance()->GetNode(bodyParts[3])->GetNodeLocalTransform().GetTranslate().x >
-				wayPoints[waypointIndex].x - 1.f &&
-				CSceneGraph::GetInstance()->GetNode(bodyParts[3])->GetNodeLocalTransform().GetTranslate().z <
-				wayPoints[waypointIndex].z + 1.f &&
-				CSceneGraph::GetInstance()->GetNode(bodyParts[3])->GetNodeLocalTransform().GetTranslate().z >
-				wayPoints[waypointIndex].z - 1.f)
-			{
-				if (waypointIndex == 3)
-					waypointIndex = 0;
-				else
-					waypointIndex++;
+		case PETROL:
 
-				if (currIndex == 3)
-					currIndex = 0;
-				else
-					currIndex++;
-			}
-			Vector3 movingtowards;
-			movingtowards = (wayPoints[waypointIndex] - wayPoints[currIndex]).Normalized();
-
-			if (CSceneGraph::GetInstance()->GetNode(bodyParts[3]))
-				CSceneGraph::GetInstance()->GetNode(bodyParts[3])->ApplyTranslate(dt * movingtowards.x * m_dSpeed, 0, dt * movingtowards.z * m_dSpeed);
-		}
-	}
-	else
-	{
-		if (!isDead)
 		{
-			vec3df pa(p.x, p.y, p.z);
-			pa = pa.normalize() * 3.f;
-			AudioManager::GetInstance()->Sound_Engine->play3D("Music/ZombieDie.mp3", pa, false);
+					   if (CSceneGraph::GetInstance()->GetNode(bodyParts[3]) && CSceneGraph::GetInstance()->GetNode(bodyParts[0])) {
+						   {
+							   if (CSceneGraph::GetInstance()->GetNode(bodyParts[3])->GetNodeLocalTransform().GetTranslate().x <
+							   wayPoints[waypointIndex].x + 1.f &&
+							   CSceneGraph::GetInstance()->GetNode(bodyParts[3])->GetNodeLocalTransform().GetTranslate().x >
+							   wayPoints[waypointIndex].x - 1.f &&
+							   CSceneGraph::GetInstance()->GetNode(bodyParts[3])->GetNodeLocalTransform().GetTranslate().z <
+							   wayPoints[waypointIndex].z + 1.f &&
+							   CSceneGraph::GetInstance()->GetNode(bodyParts[3])->GetNodeLocalTransform().GetTranslate().z >
+							   wayPoints[waypointIndex].z - 1.f)
+							   {
+								   if (waypointIndex == 3)
+									   waypointIndex = 0;
+								   else
+									   waypointIndex++;
+
+								   if (currIndex == 3)
+									   currIndex = 0;
+								   else
+									   currIndex++;
+							   }
+							   Vector3 movingtowards;
+							   movingtowards = (wayPoints[waypointIndex] - wayPoints[currIndex]).Normalized();
+							   CSceneGraph::GetInstance()->GetNode(bodyParts[3])->ApplyTranslate(dt * movingtowards.x * m_dSpeed, 0, dt * movingtowards.z * m_dSpeed);
+						   }
+					   }
+					   break;
+
 		}
-		isDead = true;
+
+		case CHASE:
+		{
+					  Vector3 movingtowards;
+					  if (target.y != -1000.f)
+						  movingtowards = (player->GetPos() - p).Normalized();
+					  CSceneGraph::GetInstance()->GetNode(bodyParts[3])->ApplyTranslate(dt * movingtowards.x * m_dSpeed, 0, dt * movingtowards.z * m_dSpeed);
+					  break;
+		}
+
+		case RETURN:
+		{
+					   float dist = FLT_MAX;
+					   int shortestIndex = -1;
+					   for (int i = 0; i < 4; ++i) {
+						   if ((wayPoints[i] - p).Length() < dist) {
+							   dist = (wayPoints[i] - p).Length();
+							   shortestIndex = i;
+						   }
+					   }
+					   waypointIndex = shortestIndex;
+					   Vector3 movingtowards;
+					   movingtowards = (wayPoints[waypointIndex] - p).Normalized();
+					   CSceneGraph::GetInstance()->GetNode(bodyParts[3])->ApplyTranslate(dt * movingtowards.x * m_dSpeed, 0, dt * movingtowards.z * m_dSpeed);
+					   break;
+		}
+
+		case DIE:
+		{
+					if (!isDead)
+					{
+						vec3df pa(p.x, p.y, p.z);
+						pa = pa.normalize() * 3.f;
+						AudioManager::GetInstance()->Sound_Engine->play3D("Music/ZombieDie.mp3", pa, false);
+					}
+					isDead = true;
+					break;
+		}
+		}
 	}
 }
 
 void CZombie::Kill()
 {
 	 CSceneGraph::GetInstance()->DeleteNode(bodyParts[3]);
+}
+
+void CZombie::FSM()
+{
+	if (!CSceneGraph::GetInstance()->GetNode(bodyParts[3]) || !CSceneGraph::GetInstance()->GetNode(bodyParts[0])) {
+		state = DIE;
+	}
+	else
+	{
+		switch (state)
+		{
+		case PETROL: {
+						 if (((player->GetPos() - CSceneGraph::GetInstance()->GetNode(bodyParts[3])->GetNodeLocalTransform().GetTranslate()).Length() < 100.f) &&
+							 NotInjured())
+							 state = CHASE;
+						   break;
+		}
+		case CHASE: {
+						if (((player->GetPos() - CSceneGraph::GetInstance()->GetNode(bodyParts[3])->GetNodeLocalTransform().GetTranslate()).Length() >= 100.f) &&
+							NotInjured())
+							state = RETURN;
+						break;
+		}
+		case RETURN:
+		{
+					   if (CSceneGraph::GetInstance()->GetNode(bodyParts[3])->GetNodeLocalTransform().GetTranslate().x <
+						   wayPoints[waypointIndex].x + 1.f &&
+						   CSceneGraph::GetInstance()->GetNode(bodyParts[3])->GetNodeLocalTransform().GetTranslate().x >
+						   wayPoints[waypointIndex].x - 1.f &&
+						   CSceneGraph::GetInstance()->GetNode(bodyParts[3])->GetNodeLocalTransform().GetTranslate().z <
+						   wayPoints[waypointIndex].z + 1.f &&
+						   CSceneGraph::GetInstance()->GetNode(bodyParts[3])->GetNodeLocalTransform().GetTranslate().z >
+						   wayPoints[waypointIndex].z - 1.f) {
+						   state = PETROL;
+						   if (waypointIndex == 3)
+							   waypointIndex = 0;
+						   else
+							   waypointIndex++;
+					   }
+					   if (((player->GetPos() - CSceneGraph::GetInstance()->GetNode(bodyParts[3])->GetNodeLocalTransform().GetTranslate()).Length() < 100.f) &&
+						   NotInjured())
+						   state = CHASE;
+					   break;
+		}
+		case DIE:
+			isDead = true;
+			break;
+		}
+	}
+}
+
+bool CZombie::NotInjured()
+{
+	return (CSceneGraph::GetInstance()->GetNode(bodyParts[0]) &&
+		CSceneGraph::GetInstance()->GetNode(bodyParts[1]) &&
+		CSceneGraph::GetInstance()->GetNode(bodyParts[2]) &&
+		CSceneGraph::GetInstance()->GetNode(bodyParts[3]) &&
+		CSceneGraph::GetInstance()->GetNode(bodyParts[4]) &&
+		CSceneGraph::GetInstance()->GetNode(bodyParts[5]));
 }
