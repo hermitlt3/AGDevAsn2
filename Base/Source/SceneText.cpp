@@ -135,11 +135,23 @@ void SceneText::Init()
 
 	new Crate(Vector3(-239, -10, -305), 15);
 	theZombie = new CZombie();
-	theZombie->Init(Vector3(-250, -3, -250));
-	theZombie->SetWayPoints(Vector3(-250, -3, -250), Vector3(-250, -3, 250), Vector3(250, -3, 250), Vector3(250, -3, -250));
+	Vector3 a[4];
+	lua_getglobal(CLuaInterface::GetInstance()->theLuaState, "Zombie1");
+	a[0] = Vector3(CLuaInterface::GetInstance()->GetField("x"), CLuaInterface::GetInstance()->GetField("y"), CLuaInterface::GetInstance()->GetField("z"));
+	lua_getglobal(CLuaInterface::GetInstance()->theLuaState, "Zombie2");
+	a[1] = Vector3(CLuaInterface::GetInstance()->GetField("x"), CLuaInterface::GetInstance()->GetField("y"), CLuaInterface::GetInstance()->GetField("z"));
+	lua_getglobal(CLuaInterface::GetInstance()->theLuaState, "Zombie3");
+	a[2] = Vector3(CLuaInterface::GetInstance()->GetField("x"), CLuaInterface::GetInstance()->GetField("y"), CLuaInterface::GetInstance()->GetField("z"));
+	lua_getglobal(CLuaInterface::GetInstance()->theLuaState, "Zombie4");
+	a[3] = Vector3(CLuaInterface::GetInstance()->GetField("x"), CLuaInterface::GetInstance()->GetField("y"), CLuaInterface::GetInstance()->GetField("z"));
+	theZombie->Init(a[0]);
+	theZombie->SetWayPoints(a[0], a[1], a[2], a[3]);
+	theZombie->SetTarget(playerInfo->GetPos());
+	theZombie->SetPlayer(playerInfo);
+
 	theNPC = new CSteve();
-	theNPC->Init(Vector3(250, -3, 250));
-	theNPC->SetWayPoints(Vector3(250, -3, 250), Vector3(250, -3, -250), Vector3(-250, -3, -250), Vector3(-250, -3, 250));
+	theNPC->Init(a[2]);
+	theNPC->SetWayPoints(a[2], a[3], a[0], a[1]);
 
 	mill = new Windmill();
 	fireSprite = Create::BulletSprite("Bulletfire", Vector3(0, 0, 0), Vector3(2, 2, 2));
@@ -189,7 +201,7 @@ void SceneText::Update(double dt)
 	zGtr->GenerateZombies(playerInfo->GetPos(), type);
 
 	// Incorrect method. But too time consuming to do the correct method for now.
-	if (MouseController::GetInstance()->IsButtonDown(static_cast<MouseController::BUTTON_TYPE>(CLuaInterface::GetInstance()->getIntValue("primary")))) {
+	if (MouseController::GetInstance()->IsButtonDown(MouseController::LMB)) {
 		if (playerInfo->GetFirstWeapon()->GetMagRound() > 0)
 			fireSprite->isPressed = true;
 		else
@@ -331,6 +343,8 @@ void SceneText::Update(double dt)
 	if (winlose == 1)
 		ss << "You win. Gratz!";
 	textObj[2]->SetText(ss1.str());
+
+	theZombie->FSM();
 }
 
 void SceneText::Render()

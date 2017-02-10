@@ -92,6 +92,18 @@ void CLuaInterface::Drop()
 		// Close lua state
 		lua_close(theLuaState);
 	}
+	if (theSavedState)
+	{
+		lua_close(theSavedState);
+	}
+	if (theMeshLua)
+	{
+		//lua_close(theMeshLua);
+	}
+	if (theErrorState)
+	{
+		lua_close(theErrorState);
+	}
 }
 
 int CLuaInterface::getIntValue(const char *name)

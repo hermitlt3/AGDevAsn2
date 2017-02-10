@@ -44,8 +44,6 @@ moveLeft		= "A"
 moveRight		= "D"
 reload			= "R"
 jump			= 32
-secondary		= 1
-primary			= 0
 
 -- CPlayerInfo start position
 CPlayerInfoStartPos = {400, 0, 0}
@@ -53,6 +51,7 @@ CPlayerInfoStartTarget = {0, 0, 0}
 CPlayerInfoStartUp = {0, 1, 0}
 
 -- Way points
-Waypoint_A_1 = {x=10.0, y=0.0, z=50.0}
-Waypoint_A_2 = {x=10.0, y=0.0, z=-50.0}
-Waypoint_A_3 = {x=-10.0, y=0.0, z=0.0}
+Zombie1 = {x=-250, y=-3, z=-250}
+Zombie2 = {x=-250, y=-3, z=250}
+Zombie3 = {x=250, y=-3, z=250}
+Zombie4 = {x=250, y=-3, z=-250}
